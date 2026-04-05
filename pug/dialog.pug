@@ -1,0 +1,43 @@
+extends ./_layout/base.pug
+block vars
+	- const title = 'TOP'
+block contents
+	j-dialog#dia-1(p-btn={close: false })
+		p HOGE
+		p HOGE
+		p HOGE
+	j-dialog#dia-2
+		p HOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+		p HOGE
+	button#dia-1-open DIA 1
+	button#dia-2-open DIA 2
+	script(type='module').
+		import jQC from './js/jq/jqc.min.js'
+		await jQC.import('j-dialog')
+		const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
+		$('#dia-1-open').click(() => { $dia1.open() })
+		$('#dia-2-open').click(() => { $dia2.open() })
+		$dia1.open()

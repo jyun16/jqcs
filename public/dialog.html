@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="/css/main.min.css" rel="stylesheet">
+    <link href="/css/jqc.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <title>TOP</title>
+  </head>
+  <body>
+    <ul class="menu">
+      <li><a href="/">top</a></li>
+      <li><a href="/pager.html">pager</a></li>
+      <li><a href="/form.html">form</a></li>
+      <li><a href="/forms.html">forms</a></li>
+      <li><a href="/dialog.html">dialog</a></li>
+    </ul>
+    <j-dialog id="dia-1" p-btn="{&quot;close&quot;:false}">
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+    </j-dialog>
+    <j-dialog id="dia-2">
+      <p>HOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+      <p>HOGE</p>
+    </j-dialog>
+    <button id="dia-1-open">DIA 1</button>
+    <button id="dia-2-open">DIA 2</button>
+    <script type="module">
+      import jQC from './js/jq/jqc.min.js'
+      await jQC.import('j-dialog')
+      const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
+      $('#dia-1-open').click(() => { $dia1.open() })
+      $('#dia-2-open').click(() => { $dia2.open() })
+      $dia1.open()
+    </script>
+    <script type="module">import {} from '/js/main.min.js'</script>
+    <style>ul.menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.menu li {
+  margin-right: 0.5em;
+}
+ul.menu li:last-child {
+  margin-right: 0;
+}
+    </style>
+  </body>
+</html>

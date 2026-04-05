@@ -1,0 +1,42 @@
+extends ./_layout/base.pug
+block vars
+	- const title = 'FORM'
+block contents
+	form#form
+		p
+			j-input#hoge(name='hoge' p-val='HOGE')
+		p
+			j-input#fuga(name='fuga' p-val='FUGA')
+		p
+			j-checkbox(name='check' p-opts='{ "hoge": "HOGE", "fuga": "FUGA" }' p-vals='[ "hoge" ]')
+		p
+			button submit
+	#display
+	script(type='module').
+		const d = console.log
+		import $ from './js/jq/jq.min.js'
+		import jQC from './js/jq/jqc.min.js'
+		await jQC.importWithPath('form', [ 'j-input', 'j-checkbox' ])
+		const $forms = jQC.binds('j-input', 'j-checkbox')
+		const $hoge = jQC.getById('hoge')
+		const $fuga = jQC.getByName('fuga')
+		$hoge.p.val = 'HOGEHOGE'
+		$fuga.p.val = 'FUGAFUGA'
+		const $check = jQC.getByName('check')
+		$check.p.vals = [ 'hoge', 'fuga' ]
+		$forms.render()
+		const submit = e => {
+			e.preventDefault()
+			const data = new FormData(e.target)
+			$('#display').html(JSON.stringify($.form2obj(data)))
+			/*
+			const res = fetch('/api/upload', {
+				method: 'POST',
+				body: new FormData(form)
+			})
+			const data = await res.json()
+			console.log(data)
+			*/
+		}
+		$('#form').on('submit', submit)
+		$('#form').trigger('submit')

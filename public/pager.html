@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="/css/main.min.css" rel="stylesheet">
+    <link href="/css/jqc.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <title>PAGER</title>
+  </head>
+  <body>
+    <ul class="menu">
+      <li><a href="/">top</a></li>
+      <li><a href="/pager.html">pager</a></li>
+      <li><a href="/form.html">form</a></li>
+      <li><a href="/forms.html">forms</a></li>
+      <li><a href="/dialog.html">dialog</a></li>
+    </ul>
+    <pager id="pager" @cb-click="jump"></pager>
+    <script type="module">
+      import $ from './js/jq/jq.min.js'
+      import jQC from './js/jq/jqc.min.js'
+      await jQC.import('pager')
+      globalThis.jump = function() {
+      	console.log('jump to', this.p.page)
+      }
+      const $pager = jQC.bind('pager')
+      // $pager.jump(10)
+    </script>
+    <script type="module">import {} from '/js/main.min.js'</script>
+    <style>ul.menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.menu li {
+  margin-right: 0.5em;
+}
+ul.menu li:last-child {
+  margin-right: 0;
+}
+    </style>
+  </body>
+</html>

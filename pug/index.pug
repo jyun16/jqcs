@@ -1,0 +1,19 @@
+extends ./_layout/base.pug
+block vars
+	- const title = 'TOP'
+block contents
+	count#cnt1(@cb-countup='countup()')
+	count#cnt2(@cb-countup='countup2()')
+	script(type='module').
+		import jQC from './js/jq/jqc.min.js'
+		await jQC.import('count')
+		const d = console.log
+		const $count = jQC.bind('count')
+		globalThis.countup = function(data) {
+			d('[1] From jqc: ', data)
+			return `[1] From js: ${this.p.count}`
+		}
+		globalThis.countup2 = function(data) {
+			d('[2] From jqc: ', data)
+			return `[2] From js: ${this.p.count}`
+		}

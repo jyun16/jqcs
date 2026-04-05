@@ -1,0 +1,120 @@
+pug
+	.tags(@click='toggleOpts()' '{{ !attrs }}')
+		{% for k in p.vals %}
+			.tag
+				.lbl {{ p.opts[k] }}
+				.rm.material-symbols-outlined(@click!="rmVal('{{ k }}')") close
+		{% end %}
+		modal
+			.opts
+				input(type='text' @typed='filter(e)' @stop value!='{{ p.filter }}')
+				ul
+					{% for k, v in p.opts %}
+						{% if (!p.vals.includes(k) && v.includes(p.filter)) %}
+							li(@click!="select('{{ k }}')") {{ v }}
+						{% end %}
+					{% end %}
+p
+	{
+		vals: [],
+		opts: {},
+		filter: '',
+		option_height: '',
+	}
+head
+	const d = console.log
+	await jQC.import('modal')
+	let $modal = null
+postRender
+	$modal = jQC.bind('modal')
+init
+	this.render()
+methods
+	toggleOpts() {
+		$modal.toggle()
+	},
+	filter(e) {
+		this.p.filter = e.target.value
+		this.render()
+		const el = this.find('input').el(0)
+		el.focus()
+		const val = el.value
+		el.setSelectionRange(val.length, val.length)
+	},
+	select(k) {
+		if (!this.p.vals.includes(k)) {
+			this.p.vals.push(k)
+			this.p.filter = ''
+			this.render()
+		}
+	},
+	rmVal(k) {
+		this.p.vals = this.p.vals.filter(v => v !== k)
+		this.render()
+	}
+scss
+	input {
+		width: 100%;
+		padding: 10px;
+		border: 2px solid #ddd;
+		border-radius: 5px;
+		&:focus {
+			border-color: #0099ff;
+			outline: none;
+		}
+	}
+	.tags {
+		display: flex;
+		position: relative;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0.5em;
+		width: 100%;
+		height: 2.6rem;
+		padding: 0 .5rem;
+		background-color: white;
+		border: 2px solid #ddd;
+		border-radius: 5px;
+		cursor: pointer;
+		margin-bottom: .5rem;
+		.tag {
+			display: flex;
+			align-items: center;
+			background: #666;
+			padding: 0 .5rem;
+			border-radius: 4px;
+			user-select: none;
+			height: 2rem;
+			cursor: default;
+			.lbl {
+				transform: translateY(-1px);
+			}
+			.rm {
+				transform: translateX(4px);
+				font-size: 1.2rem;
+				border: none;
+				cursor: pointer;
+			}
+		}
+	}
+	.opts {
+		padding: .3rem;
+		border: 1px solid #ccc;
+		background-color: #666;
+		ul { 
+			overflow-y: auto;
+			max-height: var(--option-height, 300px);
+			width: 100%;
+			margin: .3rem 0;
+			padding: 0;
+			list-style: none;
+			li {
+				padding: 0.3em 0.5em;
+				cursor: pointer;
+				user-select: none;
+				&:hover {
+					background: #eee;
+				}
+			}
+		}
+	}

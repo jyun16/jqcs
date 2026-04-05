@@ -1,0 +1,49 @@
+pug
+	{% for v, l in p.opts %}
+		label
+			input(type='radio' value!='{{ v }}' @change='change(e)' '{{ !attrs }}' '{% if p.val == v %}checked{% end %}') {{ l }}
+	{% end %}
+p
+	{ name: '', val: '', opts: {} }
+methods
+	change(e) {
+		const t = e.target
+		if (t.checked) { this.p.val = t.value }
+	}
+scss
+	this {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 1em;
+		border: none;
+		label {
+			display: flex;
+			align-items: center;
+			gap: 0 .5em;
+			position: relative;
+			cursor: pointer;
+			user-select: none;
+			&::before, &::after {
+				border-radius: 50%;
+				content: '';
+			}
+			&::before {
+				width: 18px;
+				height: 18px;
+				border: 2px solid #ddd;
+				box-sizing: border-box;
+			}
+			&::after {
+				position: absolute;
+				top: 50%;
+				left: 9px;
+				transform: translate(-50%, -50%);
+				width: 9px;
+				height: 9px;
+			}
+			&:has(:checked)::after {
+				background-color: #0099ff;
+			}
+		}
+		input { display: none; }
+	}

@@ -1,0 +1,50 @@
+pug
+	{% for v, l in p.opts %}
+		label
+			input(type='checkbox' value!='{{ v }}' @change='change(e)' '{{ !attrs }}' {% if p.val.includes(v) %}checked{% end %}) {{ l }}
+	{% end %}
+p
+	{ name: '', val: [] }
+methods
+	change(e) {
+		const t = e.target
+		let v = this.p.val
+		if (t.checked) { v.push(t.value) }
+		else {
+			this.p.val = v.filter(v => v != t.value)
+		}
+	}
+scss
+	this {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 1em;
+		border: none;
+		label {
+			display: flex;
+			align-items: center;
+			gap: 0 .5em;
+			position: relative;
+			cursor: pointer;
+			user-select: none;
+			&::before {
+				width: 14px;
+				height: 14px;
+				border-radius: 3px;
+				border: 2px solid #ddd;
+				content: '';
+			}
+			&:has(:checked)::after {
+				position: absolute;
+				top: 5px;
+				left: 6px;
+				transform: rotate(45deg);
+				width: 4px;
+				height: 9px;
+				border: solid #0099ff;
+				border-width: 0 3px 3px 0;
+				content: '';
+			}
+		}
+		input { display: none; }
+	}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="/css/main.min.css" rel="stylesheet">
+    <link href="/css/jqc.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <title>FORM</title>
+  </head>
+  <body>
+    <ul class="menu">
+      <li><a href="/">top</a></li>
+      <li><a href="/pager.html">pager</a></li>
+      <li><a href="/form.html">form</a></li>
+      <li><a href="/forms.html">forms</a></li>
+      <li><a href="/dialog.html">dialog</a></li>
+    </ul>
+    <form id="form">
+      <p>
+        <j-input id="hoge" name="hoge" p-val="HOGE"></j-input>
+      </p>
+      <p>
+        <j-input id="fuga" name="fuga" p-val="FUGA"></j-input>
+      </p>
+      <p>
+        <j-checkbox name="check" p-opts="{ &quot;hoge&quot;: &quot;HOGE&quot;, &quot;fuga&quot;: &quot;FUGA&quot; }" p-vals="[ &quot;hoge&quot; ]"></j-checkbox>
+      </p>
+      <p>
+        <button>submit</button>
+      </p>
+    </form>
+    <div id="display"></div>
+    <script type="module">
+      const d = console.log
+      import $ from './js/jq/jq.min.js'
+      import jQC from './js/jq/jqc.min.js'
+      await jQC.importWithPath('form', [ 'j-input', 'j-checkbox' ])
+      const $forms = jQC.binds('j-input', 'j-checkbox')
+      const $hoge = jQC.getById('hoge')
+      const $fuga = jQC.getByName('fuga')
+      $hoge.p.val = 'HOGEHOGE'
+      $fuga.p.val = 'FUGAFUGA'
+      const $check = jQC.getByName('check')
+      $check.p.vals = [ 'hoge', 'fuga' ]
+      $forms.render()
+      const submit = e => {
+      	e.preventDefault()
+      	const data = new FormData(e.target)
+      	$('#display').html(JSON.stringify($.form2obj(data)))
+      	/*
+      	const res = fetch('/api/upload', {
+      		method: 'POST',
+      		body: new FormData(form)
+      	})
+      	const data = await res.json()
+      	console.log(data)
+      	*/
+      }
+      $('#form').on('submit', submit)
+      $('#form').trigger('submit')
+    </script>
+    <script type="module">import {} from '/js/main.min.js'</script>
+    <style>ul.menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.menu li {
+  margin-right: 0.5em;
+}
+ul.menu li:last-child {
+  margin-right: 0;
+}
+    </style>
+  </body>
+</html>

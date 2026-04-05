@@ -1,0 +1,22 @@
+@use 'sass:color';
+@use './var' as v;
+
+* {
+	box-sizing: border-box;
+}
+
+a {
+	text-decoration: none;
+	color: v.$color;
+	&:hover {
+		color: color.adjust(v.$color, $lightness: 60%, $space: hsl)
+	}
+	&.active {
+		color: v.$color;
+	}
+}
+
+body {
+	color: v.$color;
+	background-color: v.$bgColor;
+}

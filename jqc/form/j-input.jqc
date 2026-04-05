@@ -1,0 +1,19 @@
+pug
+	input(type='text' name!='{{ p.name }}' value!='{{ p.val }}' @typed='input(e)' '{{ !attrs }}')
+p
+	{ name: '', val: '' }
+methods
+	input(e) {
+		this.p.val = e.target.value
+	}
+scss
+	input {
+		width: 100%;
+		padding: 10px;
+		border: 2px solid #ddd;
+		border-radius: 5px;
+		&:focus {
+			border-color: #0099ff;
+			outline: none;
+		}
+	}

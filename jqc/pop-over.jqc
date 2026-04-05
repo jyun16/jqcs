@@ -1,0 +1,25 @@
+pug
+	modal
+		.pop-over
+p
+	{ show: false }
+head
+	const d = console.log
+async init
+	this.render()
+	this.$modal = jQC.bind('modal', this)
+	this.$modal.render()
+methods
+	toggle() { this.$modal.toggle() },
+	open() { this.$modal.open() },
+	close() { this.$modal.close() },
+scss
+	this {
+		position: absolute;
+		width: 100%;
+		top: 5px;
+		left: 0;
+		z-index: 100;
+		.modal {
+		}
+	}

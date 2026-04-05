@@ -1,0 +1,40 @@
+pug
+	input(type='text' name!='{{ p.name }}' value!='{{ p.val }}' @typed='input(e)' '{{ !attrs }}')
+	button(type='button' @click='search()')
+p
+	{ name: '', val: '' }
+methods
+	input(e) {
+		this.p.val = e.target.value
+	},
+	search() {
+		this.cb('search')
+	}
+scss
+	this {
+		position: relative;
+		input {
+			width: 100%;
+			padding: 10px;
+			border: 2px solid #ddd;
+			border-radius: 5px;
+			&:focus {
+				border-color: #0099ff;
+				outline: none;
+			}
+		}
+		button {
+			position: absolute;
+			top: 0px;
+			right: 10px;
+			border: none;
+			background-color: transparent;
+			cursor: pointer;
+			&::after {
+				color: #999;
+				font-size: 24px;
+				font-family: 'Material Symbols Outlined';
+				content: '\e8b6';
+			}
+		}
+	}

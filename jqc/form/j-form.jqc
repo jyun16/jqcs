@@ -1,0 +1,129 @@
+pug
+	form.jqc-hide(@submit='submit(e)')
+		{% for k, v in p.conf %}
+			.line
+				.label {{ v.label }}
+				.input
+					{% if v.type == 'input' %}
+						j-input(name!='{{ k }}' p-val!='{{ v.val }}' '{{ !v.attrs }}')
+					{% else if v.type == 'password' %}
+						j-password(name!='{{ k }}' p-val!='{{ v.val }}' '{{ !v.attrs }}')
+					{% else if v.type == 'search' %}
+						j-search(name!='{{ k }}' p-val!='{{ v.val }}' '{{ !v.attrs }}')
+					{% else if v.type == 'textarea' %}
+						j-textarea(name!='{{ k }}' p-val!='{{ v.val }}' '{{ !v.attrs }}')
+					{% else if v.type == 'checkbox' %}
+						j-checkbox(name!='{{ k }}' p-val!='{{ v.val }}' p-opts!='{{ v.opts }}' '{{ !v.attrs }}')
+					{% else if v.type == 'radio' %}
+						j-radio(name!='{{ k }}' p-val!='{{ v.val }}' p-opts!='{{ v.opts }}' '{{ !v.attrs }}')
+					{% else if v.type == 'select' %}
+						j-select(name!='{{ k }}' p-val!='{{ v.val }}' p-opts!='{{ v.opts }}' '{{ !v.attrs }}')
+					{% else if v.type == 'mselect' %}
+						j-mselect(name!='{{ k }}' p-val!='{{ v.val }}' p-opts!='{{ v.opts }}' '{{ !v.attrs }}')
+					{% else if v.type == 'rich-select' %}
+						j-rich-select(name!='{{ k }}' p-val!='{{ v.val }}' p-opts!='{{ v.opts }}' '{{ !v.attrs }}')
+					{% end %}
+		{% end %}
+		.actions
+			button.primary(type='submit') GO
+p
+	{ name: 'form', conf: {}, initRender: true }
+head
+	const d = console.log
+async init
+	this.render()
+	const binded = new Set()
+	const f = {}
+	let ret
+	for (const n of Object.keys(this.p.conf)) {
+		const o = this.p.conf[n]
+		if (binded.has(o.type)) continue
+		await jQC.importWithPath('form', [ `j-${o.type}` ])
+		const $f = jQC.bind(`j-${o.type}`, this)
+		if (this.p.initRender) {
+			ret = jQC.queueRender($f)
+		}
+		binded.add(o.type)
+		for (const $el of $f) { f[$el.p.name] = $el }
+	}
+	this.f = f
+	return ret
+methods
+	val(val) {
+		if (val) {
+			for (const n of Object.keys(val)) { this.f[n].p.val = val[n] }
+			return val
+		}
+		const ret = {}
+		for (const n in this.f) { ret[n] = this.f[n].p.val }
+		return ret
+	},
+	renderVal(val) {
+		let ret
+		for (const n of Object.keys(val)) {
+			this.f[n].p.val = val[n]
+			ret = jQC.queueRender(this.f[n])
+		}
+		if (ret) { ret.then(() => this.find('form').removeClass('jqc-hide')) }
+		else { this.find('form').removeClass('jqc-hide') }
+		return ret
+	},
+	submit(e) {
+		e.preventDefault()
+		const data = this.find('form').serialize()
+		this.cb('submit', JSON.stringify(data))
+	},
+	serialize() {
+		return this.find('form').serialize()
+	},
+scss
+	form {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin: 0 auto;
+		padding: .5rem;
+		gap: .5rem;
+		.line {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			.label {
+				min-width: 200px;
+			}
+			.input {
+				flex: 1;
+			}
+		}
+		.actions {
+			display: flex;
+			justify-content: center;
+		}
+		button.primary {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			min-width: 200px;
+			border: 0;
+			border-radius: 5px;
+			color: white;
+			background-color: #0066ff;
+			font-weight: bold;
+			padding: .7rem;
+			cursor: pointer;
+		}
+	}
+globalScss
+	@media (width < 600px) {
+		form {
+			.line {
+				display: flex;
+				flex-direction: column;
+				flex-wrap: wrap;
+				align-items: flex-start;
+				.label {
+					width: 100%;
+				}
+			}
+		}
+	}

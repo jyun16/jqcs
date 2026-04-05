@@ -1,0 +1,26 @@
+pug
+	.modal {{ slot | raw }}
+p
+	{ show: false }
+head
+	const d = console.log
+postRender
+	this.p.show ? this.open() : this.close()
+methods
+	toggle() {
+		this.p.show = !this.p.show
+		if (this.p.show) { jQC.overlay.open(this); this.open() }
+		else { this.close() }
+	},
+	open() { this.p.show = true; this.show() },
+	close() { this.p.show = false; this.hide() },
+scss
+	this {
+		position: absolute;
+		width: 100%;
+		top: 5px;
+		left: 0;
+		z-index: 100;
+		.modal {
+		}
+	}

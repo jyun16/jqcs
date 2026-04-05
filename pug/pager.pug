@@ -1,0 +1,14 @@
+extends ./_layout/base.pug
+block vars
+	- const title = 'PAGER'
+block contents
+	pager#pager(@cb-click='jump')
+	script(type='module').
+		import $ from './js/jq/jq.min.js'
+		import jQC from './js/jq/jqc.min.js'
+		await jQC.import('pager')
+		globalThis.jump = function() {
+			console.log('jump to', this.p.page)
+		}
+		const $pager = jQC.bind('pager')
+		// $pager.jump(10)

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="/css/main.min.css" rel="stylesheet">
+    <link href="/css/jqc.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <title>TOP</title>
+  </head>
+  <body>
+    <ul class="menu">
+      <li><a href="/">top</a></li>
+      <li><a href="/pager.html">pager</a></li>
+      <li><a href="/form.html">form</a></li>
+      <li><a href="/forms.html">forms</a></li>
+      <li><a href="/dialog.html">dialog</a></li>
+    </ul>
+    <count id="cnt1" @cb-countup="countup()"></count>
+    <count id="cnt2" @cb-countup="countup2()"></count>
+    <script type="module">
+      import jQC from './js/jq/jqc.min.js'
+      await jQC.import('count')
+      const d = console.log
+      const $count = jQC.bind('count')
+      globalThis.countup = function(data) {
+      	d('[1] From jqc: ', data)
+      	return `[1] From js: ${this.p.count}`
+      }
+      globalThis.countup2 = function(data) {
+      	d('[2] From jqc: ', data)
+      	return `[2] From js: ${this.p.count}`
+      }
+    </script>
+    <script type="module">import {} from '/js/main.min.js'</script>
+    <style>ul.menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.menu li {
+  margin-right: 0.5em;
+}
+ul.menu li:last-child {
+  margin-right: 0;
+}
+    </style>
+  </body>
+</html>

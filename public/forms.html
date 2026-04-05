@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="/css/main.min.css" rel="stylesheet">
+    <link href="/css/jqc.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <title>FORM</title>
+  </head>
+  <body>
+    <ul class="menu">
+      <li><a href="/">top</a></li>
+      <li><a href="/pager.html">pager</a></li>
+      <li><a href="/form.html">form</a></li>
+      <li><a href="/forms.html">forms</a></li>
+      <li><a href="/dialog.html">dialog</a></li>
+    </ul>
+    <j-form p-conf="conf()" @cb-submit="submit(formData)" p-init-render="false"></j-form>
+    <script type="module">
+      const d = console.log
+      
+      import $ from './js/jq/jq.min.js'
+      import jQC from './js/jq/jqc.min.js'
+      
+      await jQC.importWithPath('form', [ 'j-form' ])
+      
+      globalThis.submit = function(formData) {
+      	d('cb', formData)
+      }
+      globalThis.search = function() {
+      	d('globalThis.search', this.p)
+      }
+      globalThis.conf = function() { return {
+      	text: {
+      		type: 'input', label: 'TEXT', val: 'ほげ',
+      		attrs: { placeholder: 'TEXT', autofocus: true, required: true, }
+      	},
+      	search: {
+      		type: 'search', label: 'SEARCH', val: 'おーい',
+      		attrs: { placeholder: 'SEARCH', '@cb-search': 'search()' },
+      	},
+      	password: {
+      		type: 'password', label: 'PASSWORD', val: 'hogehoge',
+      	},
+      	textarea: {
+      		type: 'textarea', label: 'TEXTAREA',
+      		val: 'ほげ\nふが',
+      		attrs: {
+      			style: `
+      				min-height: 20lh;
+      				max-height: 10lh;
+      			`,
+      		},
+      	},
+      	radio: {
+      		type: 'radio', label: 'RADIO',
+      		opts: { hoge: 'HOGE', fuga: 'FUGA', radio: 'RADIO' },
+      		val: 'fuga',
+      	},
+      	checkbox: {
+      		type: 'checkbox', label: 'CHECKBOX',
+      		opts: { hoge: 'HOGE', fuga: 'FUGA', checkbox1: 'CHECKBOX 1', checkbox2: 'CHECKBOX 2' },
+      		val: [ 'hoge', 'foo' ],
+      	},
+      	select: {
+      		type: 'select', label: 'SELECT',
+      		opts: { hoge: 'HOGE', fuga: 'FUGA', select: 'SELECT' },
+      		val: 'select',
+      	},
+      	mselect: {
+      		type: 'mselect', label: 'M-SELECT',
+      		opts: { hoge: 'HOGE', fuga: 'FUGA', mselect1: 'M-SELECT 1', mselect2: 'M-SELECT 2' },
+      		attrs: { size: 4, },
+      		val: [ 'fuga', 'bar' ],
+      	},
+      	// rselect: {
+      	// 	type: 'rich-select', label: 'RICH-SELECT',
+      	// 	opts: { hoge: 'HOGE', fuga: 'FUGA', foo: 'FOO', bar: 'BAR', baz: 'BAZ', xxx: 'XXX', yyy: 'YYY', zzz: 'ZZZ' },
+      	// 	vals: [ 'fuga', 'bar' ],
+      	// 	attrs: {
+      	// 		option_height: '200px',
+      	// 	},
+      	// },
+      }}
+      const $form = await jQC.bind('j-form').ready()
+      const data = {
+      	text: 'TEXT',
+      	password: 'PASSWORD',
+      	search: 'SEARCH',
+      	textarea: 'TEXTAREA\nTEXTAREA',
+      	radio: 'radio',
+      	checkbox: [ 'checkbox1', 'checkbox2' ],
+      	select: 'select',
+      	mselect: [ 'mselect1', 'mselect2' ],
+      }
+      await $form.renderVal(data)
+      $form.show()
+    </script>
+    <script type="module">import {} from '/js/main.min.js'</script>
+    <style>ul.menu {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+ul.menu li {
+  margin-right: 0.5em;
+}
+ul.menu li:last-child {
+  margin-right: 0;
+}
+    </style>
+  </body>
+</html>
