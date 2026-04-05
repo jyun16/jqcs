@@ -23,3 +23,4 @@ build
 tmpl_c
 .svelte-kit
 org.eclipse.buildship.core.prefs
+pnpm-workspace.yaml
