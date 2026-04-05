@@ -15,7 +15,7 @@ countup() {
 	this.p.count++
 	this.p.color = this.p.count % 2 ? 'odd' : 'even'
 	this.render()
-	d('FROM CB:', this.cb('click', 'TO CB:' + this.p.count))
+	d('FROM CB:', this.cb('countup', 'TO CB:' + this.p.count))
 	this.addClass('show')
 }
   }

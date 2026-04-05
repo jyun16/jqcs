@@ -86,6 +86,24 @@ export function deepClone(obj) {
 	return out
 }
 
+export function setMapVal(obj, key, value) {
+  const path = key.split('.')
+  let cur = obj
+  for (let i = 0; i < path.length; i++) {
+    const k = path[i]
+    if (i === path.length - 1) {
+      cur[k] = value
+    }
+    else {
+      if (!(k in cur) || typeof cur[k] !== 'object') {
+        cur[k] = /^\d+$/.test(path[i + 1]) ? [] : {}
+      }
+      cur = cur[k]
+    }
+  }
+  return obj
+}
+
 export const filters = {
 	upper: s => s.toUpperCase(),
 	lower: s => String(s).toLowerCase(),
@@ -150,4 +168,3 @@ export function parseAttributes(str) {
 	}
 	return result
 }
-

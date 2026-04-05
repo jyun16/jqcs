@@ -1,12 +1,12 @@
 import jQC from '../../src/jqc.js'
 const d = console.log
 jQC.define('j-dialog', {
-  html: `<dialog @mousedown='clickOutside(e)'>
+  html: `<dialog @cancel='close' @mousedown='clickOutside(e)' {{ !attrs }}>
 	<div class="inner">
 		<div class="content">{{ slot | raw }}</div>
 		{% if p.btn.close %}
 		<div class="footer">
-			<button>CLOSE</button>
+			<button @click='close'>CLOSE</button>
 		</div>
 		{% end %}
 	</div>
@@ -21,13 +21,13 @@ jQC.define('j-dialog', {
 },
   init() {
 this.render()
-d(this.p)
   },
   methods: {
 open() {
 	this.find('dialog').el(0).showModal()
 },
 close() {
+	this.cb('close')
 	this.find('dialog').el(0).close()
 },
 clickOutside(e) {

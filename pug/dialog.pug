@@ -2,11 +2,11 @@ extends ./_layout/base.pug
 block vars
 	- const title = 'TOP'
 block contents
-	j-dialog#dia-1(p-btn={close: false })
+	j-dialog#dia-1(p-btn.close='true' @cb-close='cbClose')
 		p HOGE
 		p HOGE
 		p HOGE
-	j-dialog#dia-2
+	j-dialog#dia-2(p-btn.close='true')
 		p HOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGE
 		p HOGE
 		p HOGE
@@ -37,6 +37,10 @@ block contents
 	script(type='module').
 		import jQC from './js/jq/jqc.min.js'
 		await jQC.import('j-dialog')
+		const d = console.log
+		globalThis.cbClose = function() {
+			d('called cbClose', this.find('dialog').id())
+		}
 		const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
 		$('#dia-1-open').click(() => { $dia1.open() })
 		$('#dia-2-open').click(() => { $dia2.open() })

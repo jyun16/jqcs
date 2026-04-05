@@ -1,21 +1,11 @@
 pug
-	dialog(@mousedown='clickOutside(e)')
+	dialog(@cancel='close' @mousedown='clickOutside(e)' {{ !attrs }})
 		.inner
 			.content {{ slot | raw }}
 			{% if p.btn.close %}
 			.footer
-				button CLOSE
+				button(@click='close') CLOSE
 			{% end %}
-methods
-	open() {
-		this.find('dialog').el(0).showModal()
-	},
-	close() {
-		this.find('dialog').el(0).close()
-	},
-	clickOutside(e) {
-		if (e.target.tagName === 'DIALOG') this.close()
-	}
 p
 	{
 		btn: {
@@ -26,7 +16,17 @@ head
 	const d = console.log
 init
 	this.render()
-	d(this.p)
+methods
+	open() {
+		this.find('dialog').el(0).showModal()
+	},
+	close() {
+		this.cb('close')
+		this.find('dialog').el(0).close()
+	},
+	clickOutside(e) {
+		if (e.target.tagName === 'DIALOG') this.close()
+	}
 scss
 	this dialog {
 		padding: 0;

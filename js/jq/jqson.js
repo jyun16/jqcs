@@ -84,86 +84,90 @@ const jQSON = (function() {
 		return tokens
 	}
 
-	function parse(text) {
-		const tokens = tokenize(text)
-		let i = 0
-		function peek() { return tokens[i] }
-		function next() { return tokens[i++] }
-		function parseValue() {
-			const t = peek()
-			if (!t) throw new Error('Unexpected end')
-			if (t.type === 'SYMBOL' && t.value === '{') return parseObject()
-			if (t.type === 'SYMBOL' && t.value === '[') return parseArray()
-			if (t.type === 'QW_START') return parseQW()
-			if (t.type === 'SET_START') return parseSet()
-			if (t.type === 'ANGLE_START') return parseAngleSet()
-			if (t.type === 'STRING') return next().value
-			if (t.type === 'IDENT') {
-				const v = next().value
-				if (v === 'true') return true
-				if (v === 'false') return false
-				if (v === 'null') return null
-				if (!isNaN(Number(v))) return Number(v)
-				return v
-			}
-			throw new Error('Unexpected token: ' + JSON.stringify(t))
-		}
-		function parseArray() {
-			const arr = []
-			next()
-			while (peek() && !(peek().type === 'SYMBOL' && peek().value === ']')) {
-				arr.push(parseValue())
-				if (peek() && peek().type === 'SYMBOL' && peek().value === ',') next()
-			}
-			next()
-			return arr
-		}
-		function parseObject() {
-			const obj = {}
-			next()
-			while (peek() && !(peek().type === 'SYMBOL' && peek().value === '}')) {
-				const key = next().value
-				next()
-				obj[key] = parseValue()
-				if (peek() && peek().type === 'SYMBOL' && peek().value === ',') next()
-			}
-			next()
-			return obj
-		}
-		function parseQW() {
-			const arr = []
-			next()
-			while (peek() && peek().type !== 'QW_END') arr.push(next().value)
-			next()
-			return arr
-		}
-		function parseSet() {
-			const set = new Set()
-			next()
-			while (peek() && peek().type !== 'SET_END') set.add(next().value)
-			next()
-			return set
-		}
-		function parseAngleSet() {
-			const set = new Set()
-			next()
-			while (peek() && peek().type !== 'ANGLE_END') {
+function parse(text) {
+		try {
+			const tokens = tokenize(text)
+			let i = 0
+			function peek() { return tokens[i] }
+			function next() { return tokens[i++] }
+			function parseValue() {
 				const t = peek()
-				if (t.type === 'SYMBOL' && t.value === ',') {
-					next()
-					continue
+				if (!t) throw ''
+				if (t.type === 'SYMBOL' && t.value === '{') return parseObject()
+				if (t.type === 'SYMBOL' && t.value === '[') return parseArray()
+				if (t.type === 'QW_START') return parseQW()
+				if (t.type === 'SET_START') return parseSet()
+				if (t.type === 'ANGLE_START') return parseAngleSet()
+				if (t.type === 'STRING') return next().value
+				if (t.type === 'IDENT') {
+					const v = next().value
+					if (v === 'true') return true
+					if (v === 'false') return false
+					if (v === 'null') return null
+					return isNaN(Number(v)) ? v : Number(v)
 				}
-				if (t.type !== 'STRING') throw new Error('Expected string in < >')
-				set.add(next().value)
+				throw ''
 			}
-			next()
-			return set
+			function parseArray() {
+				const arr = []
+				next()
+				while (peek() && !(peek().type === 'SYMBOL' && peek().value === ']')) {
+					arr.push(parseValue())
+					if (peek() && peek().type === 'SYMBOL' && peek().value === ',') next()
+				}
+				next()
+				return arr
+			}
+			function parseObject() {
+				const obj = {}
+				next()
+				while (peek() && !(peek().type === 'SYMBOL' && peek().value === '}')) {
+					const key = next().value
+					next()
+					obj[key] = parseValue()
+					if (peek() && peek().type === 'SYMBOL' && peek().value === ',') next()
+				}
+				next()
+				return obj
+			}
+			function parseQW() {
+				const arr = []
+				next()
+				while (peek() && peek().type !== 'QW_END') arr.push(next().value)
+				next()
+				return arr
+			}
+			function parseSet() {
+				const set = new Set()
+				next()
+				while (peek() && peek().type !== 'SET_END') set.add(next().value)
+				next()
+				return set
+			}
+			function parseAngleSet() {
+				const set = new Set()
+				next()
+				while (peek() && peek().type !== 'ANGLE_END') {
+					const t = peek()
+					if (t.type === 'SYMBOL' && t.value === ',') {
+						next()
+						continue
+					}
+					if (t.type !== 'STRING') throw ''
+					set.add(next().value)
+				}
+				next()
+				return set
+			}
+			const res = parseValue()
+			return i < tokens.length ? text : res
+		} catch {
+			return text
 		}
-		return parseValue()
 	}
 
 	function dump(obj, compact = false, indent = 0) {
-		const pad = (n) => '  '.repeat(n)
+		const pad = (n) => '	'.repeat(n)
 		function isSafeKey(k) {
 			return /^[a-zA-Z_][a-zA-Z0-9_-]*$/.test(k)
 		}

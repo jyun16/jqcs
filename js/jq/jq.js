@@ -59,6 +59,9 @@ class jQ {
 		}
 		return els[0]?.innerHTML
 	}
+	oh() {
+		return this.el(0)?.outerHTML
+	}
 	outerHTML() {
 		return this.el(0)?.outerHTML
 	}

@@ -1,4 +1,6 @@
 import $ from './jq.js'
+import jQSON from './jqson.js'
+import { setMapVal } from './jq-utils.js'
 import jQT, { buildByHTML } from './jqt4dom.js'
 
 const d = console.log
@@ -143,15 +145,8 @@ const jQC = (function() {
 				let val = raw
 				if (k.startsWith('p-')) {
 					const pkey = toCamel(k.slice(2))
-					try {
-						if (/^\w+\(\)$/.test(raw)) {
-							val = globalThis[raw.slice(0, -2)]?.()
-						}
-						else {
-							val = JSON.parse(raw)
-						}
-					} catch (e) {}
-					$el.p[pkey] = val
+					val = /^\w+\(\)$/.test(raw) ? globalThis[raw.slice(0, -2)]?.() :jQSON.parse(raw)
+					setMapVal($el.p, pkey, val)
 					el.removeAttribute(k)
 				}
 				else if (!k.startsWith('@cb-') && !k.startsWith('jqc-cb-')) {
@@ -328,12 +323,10 @@ const jQC = (function() {
 			let method = cb[k]
 			if (!method) return
 			method = method.replace(/(\(.*\))?$/, '')
-			try {
-				if ($el._caller && typeof $el._caller[method] == 'function') {
-					return callMethodCB($el._caller, method, $el, ...args)
-				}
-				return callMethodCB(globalThis, method, $el, ...args)
-			} catch (e) {}
+			if ($el._caller && typeof $el._caller[method] == 'function') {
+				return callMethodCB($el._caller, method, $el, ...args)
+			}
+			return callMethodCB(globalThis, method, $el, ...args)
 		}
 	}
 
