@@ -3,79 +3,248 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link href="/favicon.ico" rel="icon">
+    <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+    <script src="/js/main.min.js"></script>
+    <link href="/css/fw.min.css" rel="stylesheet">
     <link href="/css/main.min.css" rel="stylesheet">
-    <link href="/css/jqc.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link href="/css/form.min.css" rel="stylesheet">
     <title>TOP</title>
   </head>
   <body>
-    <ul class="menu">
-      <li><a href="/">top</a></li>
-      <li><a href="/pager.html">pager</a></li>
-      <li><a href="/form.html">form</a></li>
-      <li><a href="/forms.html">forms</a></li>
-      <li><a href="/dialog.html">dialog</a></li>
-    </ul>
-    <j-dialog id="dia-1" p-btn.close="true" @cb-close="cbClose">
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-    </j-dialog>
-    <j-dialog id="dia-2" p-btn.close="true">
-      <p>HOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-      <p>HOGE</p>
-    </j-dialog>
-    <button id="dia-1-open">DIA 1</button>
-    <button id="dia-2-open">DIA 2</button>
-    <script type="module">
-      import jQC from './js/jq/jqc.min.js'
-      await jQC.import('j-dialog')
-      const d = console.log
-      globalThis.cbClose = function() {
-      	d('called cbClose', this.find('dialog').id())
+    <div id="modal-bg"></div>
+    <div class="fv">
+      <header>
+        <div id="header-left"><span class="icon" id="menu-open">menu</span><a href="/"><img id="logo" src="/favicon.ico"></a>
+          <div id="top-menu"><a href="/index.html">Count</a><a href="/pager.html">Pager</a><a href="/dialog.html">Dialog</a><a href="/forms.html">Forms</a><a href="/form.html">Form</a>
+          </div>
+        </div>
+        <div id="header-right">
+          <div class="header-icon circle-icon">H</div>
+          <div class="header-icon"><span class="icon" id="menu-right-open">more_vert</span></div>
+        </div>
+      </header>
+      <div class="f" id="body">
+        <dialog id="menu">
+          <div class="item" href="/index.html">
+            <div class="label">
+              <div class="icon">home</div><span>Count</span>
+            </div>
+          </div>
+          <div class="item" href="/pager.html">
+            <div class="label">
+              <div class="icon">home</div><span>Pager</span>
+            </div>
+          </div>
+          <div class="item" href="/dialog.html">
+            <div class="label">
+              <div class="icon">home</div><span>Dialog</span>
+            </div>
+          </div>
+          <div class="item">
+            <div class="label"><span>Forms</span>
+              <div class="sub-icon icon"></div>
+            </div>
+            <div class="sub-item-container">
+              <div class="sub-item" href="/forms.html">
+                <div class="label">Forms</div>
+              </div>
+              <div class="sub-item" href="/form.html">
+                <div class="label">Form</div>
+              </div>
+            </div>
+          </div>
+        </dialog>
+        <main>
+          <j-dialog id="dia-1" p-btn.close="true" @cb-close="cbClose">
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+          </j-dialog>
+          <j-dialog id="dia-2" p-btn.close="true">
+            <p>HOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+            <p>HOGE</p>
+          </j-dialog>
+          <button id="dia-1-open">DIA 1</button>
+          <button id="dia-2-open">DIA 2</button>
+          <script type="module">
+            import jQC from './js/jq/jqc.min.js'
+            await jQC.import('j-dialog')
+            const d = console.log
+            globalThis.cbClose = function() {
+            	d('called cbClose', this.find('dialog').id())
+            }
+            const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
+            $('#dia-1-open').click(() => { $dia1.open() })
+            $('#dia-2-open').click(() => { $dia2.open() })
+            $dia1.open()
+          </script>
+        </main>
+        <dialog id="menu-right">
+          <div class="item f-m" href="/">
+            <div class="label">
+              <div class="icon">home</div><span>Home</span>
+            </div>
+          </div>
+          <div class="item f-m" href="/login.html">
+            <div class="label">
+              <div class="icon">login</div><span>Login</span>
+            </div>
+          </div>
+          <div class="item" href="/grid.html">
+            <div class="label">Grid</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+          <div class="item" href="">
+            <div class="label">右メニュー</div>
+          </div>
+        </dialog>
+      </div>
+    </div>
+    <script>
+      const path = location.pathname
+      $('#top-menu [href]').each(function() {
+      	const $this = $(this)
+      	if ($this.attr('href') === path) {
+      		$this.addClass('current')
+      	}
+      })
+      
+      $('#menu-open').click(function() {
+      	const $menu = $('#menu')
+      	$menu[0].showModal()
+      	$menu.addClass('active')
+      })
+      $('#menu').on('click', '.item', function(e) {
+      	const $this = $(this)
+      	const $subs = $this.find('.sub-item-container')
+      	if ($subs.length) {
+      		e.preventDefault()
+      		$subs.toggleClass('active')
+      		$this.toggleClass('active')
+      	}
+      	else {
+      		const href = $this.attr('href')
+      		if (href) location.href = href
+      	}
+      })
+      $('#menu').on('click', '.sub-item', function(e) {
+      	e.stopPropagation()
+      	const href = $(this).attr('href')
+      	if (href) location.href = href
+      })
+      $('#menu [href]').each(function() {
+      	const $this = $(this)
+      	if ($this.attr('href') === path) {
+      		$this.addClass('current')
+      		$this.closest('.sub-item-container').addClass('active').parent().addClass('active')
+      	}
+      })
+      $('#menu-right-open').click(function() {
+      	const $menu = $('#menu-right')
+      	$menu[0].showModal()
+      	$menu.addClass('active')
+      })
+      
+      $('dialog').click(function(e) {
+      	if (e.target != this) return
+      	closeMenu(this)
+      })
+      $('dialog').on('cancel', function(e) {
+      	e.preventDefault()
+      	closeMenu(this)
+      })
+      const closeMenu = el => {
+      	if (!el.classList.contains('active')) return
+      	el.classList.remove('active')
+      	el.addEventListener('transitionend', () => { el.close() }, { once: true })
       }
-      const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
-      $('#dia-1-open').click(() => { $dia1.open() })
-      $('#dia-2-open').click(() => { $dia2.open() })
-      $dia1.open()
     </script>
-    <script type="module">import {} from '/js/main.min.js'</script>
-    <style>ul.menu {
-  display: flex;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-ul.menu li {
-  margin-right: 0.5em;
-}
-ul.menu li:last-child {
-  margin-right: 0;
-}
-    </style>
+    <style></style>
   </body>
 </html>

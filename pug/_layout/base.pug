@@ -3,35 +3,15 @@ html(lang='ja')
 	head
 		meta(charset='utf-8')
 		meta(name='viewport' content='width=device-width, initial-scale=1')
-		script(src='https://code.jquery.com/jquery-3.7.1.min.js')
+		link(href='/favicon.ico' rel='icon')
+		script(src='https://code.jquery.com/jquery-4.0.0.min.js')
+		script(src='/js/main.min.js')
+		link(href='/css/fw.min.css' rel='stylesheet')
 		link(href='/css/main.min.css' rel='stylesheet')
-		link(href='/css/jqc.min.css' rel='stylesheet')
-		link(href='https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined' rel='stylesheet')
+		link(href='/css/form.min.css' rel='stylesheet')
 		block vars
 			- const title = '-'
-		title #{title}
 		block head
+		title #{title}
 	body
 		block body
-			- const pages = [ 'pager', 'form', 'forms', 'dialog' ]
-			ul.menu
-				li: a(href='/') top
-				each page in pages
-					li: a(href!=`/${ page }.html`)= page
-			block contents
-			script(type='module').
-				import {} from '/js/main.min.js'
-		style
-			:scss
-				ul.menu {
-					display: flex;
-					list-style: none;
-					padding: 0;
-					margin: 0;
-					li {
-						margin-right: .5em;
-						&:last-child {
-							margin-right: 0;
-						}
-					}
-				}

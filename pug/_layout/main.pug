@@ -1,0 +1,223 @@
+extends ./base.pug
+block body
+	#modal-bg
+	-
+		const menus = [
+			{ label: 'Count', href: '/index.html', icon: 'home' },
+			{ label: 'Pager', href: '/pager.html', icon: 'home' },
+			{ label: 'Dialog', href: '/dialog.html', icon: 'home' },
+			{ label: 'Forms', subs: [
+				{ label: 'Forms', href: '/forms.html' },
+				{ label: 'Form', href: '/form.html' },
+			]},
+		]
+		const top_menus = {}
+		const gen_top_menus = m => m.forEach(m => {
+			if (m.href && m.href !== '/') top_menus[m.href] = m.label
+			if (m.subs) gen_top_menus(m.subs)
+		})
+		gen_top_menus(menus)
+	.fv
+		header
+			#header-left
+				span#menu-open.icon menu
+				a(href='/')
+					img#logo(src='/favicon.ico')
+				#top-menu
+					each text, url in top_menus
+						a(href=url, class=(currentPath === url ? 'current' : ''))= text
+			#header-right
+				.header-icon.circle-icon H
+				.header-icon
+					span#menu-right-open.icon more_vert
+		#body.f
+			dialog#menu
+				each m in menus
+					.item(href=m.href)
+						.label
+							if m.icon
+								.icon= m.icon
+							span= m.label
+							if m.subs
+								.sub-icon.icon
+						if m.subs
+							.sub-item-container
+								each sub in m.subs
+									.sub-item(href=sub.href)
+										.label= sub.label
+			main
+				block contents
+					span.icon home
+					span.icon menu
+					span.icon chevron_right
+					span.icon chevron_left
+					span.icon expand_more
+					span.icon expand_less
+					span.icon more_vert
+					span.icon login
+					span.icon logout
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ
+					p コンテンツ終端
+			dialog#menu-right
+				.item(href='/').f-m
+					.label
+						.icon home
+						span Home
+				.item(href='/login.html').f-m
+					.label
+						.icon login
+						span Login
+				.item(href='/grid.html')
+					.label Grid
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+				.item(href='')
+					.label 右メニュー
+	script.
+		const path = location.pathname
+		$('#top-menu [href]').each(function() {
+			const $this = $(this)
+			if ($this.attr('href') === path) {
+				$this.addClass('current')
+			}
+		})
+
+		$('#menu-open').click(function() {
+			const $menu = $('#menu')
+			$menu[0].showModal()
+			$menu.addClass('active')
+		})
+		$('#menu').on('click', '.item', function(e) {
+			const $this = $(this)
+			const $subs = $this.find('.sub-item-container')
+			if ($subs.length) {
+				e.preventDefault()
+				$subs.toggleClass('active')
+				$this.toggleClass('active')
+			}
+			else {
+				const href = $this.attr('href')
+				if (href) location.href = href
+			}
+		})
+		$('#menu').on('click', '.sub-item', function(e) {
+			e.stopPropagation()
+			const href = $(this).attr('href')
+			if (href) location.href = href
+		})
+		$('#menu [href]').each(function() {
+			const $this = $(this)
+			if ($this.attr('href') === path) {
+				$this.addClass('current')
+				$this.closest('.sub-item-container').addClass('active').parent().addClass('active')
+			}
+		})
+		$('#menu-right-open').click(function() {
+			const $menu = $('#menu-right')
+			$menu[0].showModal()
+			$menu.addClass('active')
+		})
+
+		$('dialog').click(function(e) {
+			if (e.target != this) return
+			closeMenu(this)
+		})
+		$('dialog').on('cancel', function(e) {
+			e.preventDefault()
+			closeMenu(this)
+		})
+		const closeMenu = el => {
+			if (!el.classList.contains('active')) return
+			el.classList.remove('active')
+			el.addEventListener('transitionend', () => { el.close() }, { once: true })
+		}
+	style
+		:scss
