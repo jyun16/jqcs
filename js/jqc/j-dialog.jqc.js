@@ -22,7 +22,7 @@ jQC.define('j-dialog', {
 	</div>
 </dialog>`,
   
-  css: "dialog {\n  position: fixed;\n  max-width: 90vw;\n  max-height: 80vh;\n  margin: 10px 0 !important;\n  position-anchor: --anchor;\n  position-area: bottom span-right;\n  position-try-fallbacks: bottom span-left, top span-left;\n}\ndialog .body:focus {\n  outline: none;\n}\ndialog::backdrop {\n  background: rgba(0, 0, 0, 0.6);\n}",
+  css: "dialog {\n  position: fixed;\n  max-width: 90vw;\n  max-height: 80vh;\n  margin: 10px 0 !important;\n}\ndialog .body:focus {\n  outline: none;\n}\ndialog::backdrop {\n  background: rgba(0, 0, 0, 0.6);\n}\ndialog .position-anchor {\n  position-anchor: --anchor;\n  position-area: bottom span-right;\n  position-try-fallbacks: bottom span-left, top span-left;\n}\n\n.dialog-anchor {\n  anchor-name: --anchor;\n}",
   globalCss: "",
   p: {
 	btn: {
@@ -31,11 +31,15 @@ jQC.define('j-dialog', {
 },
   init() {
 this.render()
-this.find('dialog').el(0).showModal()
+/* this.find('dialog').el(0).showModal() */
   },
   methods: {
-open() {
-	this.find('dialog').el(0).showModal()
+open(el) {
+	const dia = this.find('dialog').el(0)
+	d(el.outerHTML)
+	/* el.classList.add('dialog-anchor') */
+	/* dia.classList.add('position-anchor') */
+	dia.showModal()
 },
 close() {
 	this.cb('close')

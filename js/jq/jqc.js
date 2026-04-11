@@ -25,6 +25,9 @@ const jQC = (function() {
 		def.init = def.init || function() {}
 		def.render = def.render || function() {}
 		def.methods = def.methods || {}
+
+		d(def.methods)
+
 		defs[name] = def
 	}
 

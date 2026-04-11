@@ -23,10 +23,14 @@ head
 	const d = console.log
 init
 	this.render()
-	this.find('dialog').el(0).showModal()
+	/* this.find('dialog').el(0).showModal() */
 methods
-	open() {
-		this.find('dialog').el(0).showModal()
+	open(el) {
+		const dia = this.find('dialog').el(0)
+		d(el.outerHTML)
+		/* el.classList.add('dialog-anchor') */
+		/* dia.classList.add('position-anchor') */
+		dia.showModal()
 	},
 	close() {
 		this.cb('close')
@@ -41,13 +45,18 @@ scss
 		max-width: 90vw;
 		max-height: 80vh;
 		margin: 10px 0 !important;
-		position-anchor: --anchor;
-		position-area: bottom span-right;
-		position-try-fallbacks: bottom span-left, top span-left;
 		.body {
 			&:focus { outline: none; }
 		}
 		&::backdrop {
 			background: rgba(0, 0, 0, 0.6);
 		}
+		.position-anchor {
+			position-anchor: --anchor;
+			position-area: bottom span-right;
+			position-try-fallbacks: bottom span-left, top span-left;
+		}
+	}
+	.dialog-anchor {
+		anchor-name: --anchor
 	}

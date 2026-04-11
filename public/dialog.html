@@ -58,64 +58,64 @@
           <div class="fc">
             <div id="g-dir">
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
               <div class="h10">
-                <button class="primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
+                <button class="fm primary open-dialog"><span class="icon">launch</span><span>OPEN</span></button>
               </div>
             </div>
           </div>
@@ -132,12 +132,10 @@
             	d('called cbClose', this.find('dialog').id())
             }
             const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
-            $('#dia-1-open').click(() => { $dia1.open() })
             // $('#dia-2-open').click(() => { $dia2.open() })
             // $dia1.open()
-            
-            $('#open-dialog').click(e => {
-            	$dia1.open()
+            $('.open-dialog').click(function() {
+            	$dia1.open('hoge')
             })
           </script>
           <style>#g-dir {

@@ -6,7 +6,7 @@ block contents
 		#g-dir
 			each _ in Array(20)
 				.h10
-					button.primary.open-dialog
+					button.fm.primary.open-dialog
 						span.icon launch
 						span OPEN
 	j-dialog(p-btn.close='true' @cb-close='cbClose')
@@ -21,12 +21,10 @@ block contents
 			d('called cbClose', this.find('dialog').id())
 		}
 		const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
-		$('#dia-1-open').click(() => { $dia1.open() })
 		// $('#dia-2-open').click(() => { $dia2.open() })
 		// $dia1.open()
-
-		$('#open-dialog').click(e => {
-			$dia1.open()
+		$('.open-dialog').click(function() {
+			$dia1.open('hoge')
 		})
 	style
 		:scss
