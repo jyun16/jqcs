@@ -1,7 +1,7 @@
 TO := $(JQ)
 
-JS := js/jq
-JS_MIN := public/js/jq
+JS := js
+JS_MIN := public/js
 JS_FILES := $(shell find -L $(JS) -name "*.js")
 JS_MIN_FILES := $(patsubst $(JS)/%.js, $(JS_MIN)/%.min.js, $(JS_FILES))
 

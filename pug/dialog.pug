@@ -1,39 +1,18 @@
 extends ./_layout/main.pug
 block vars
-	- const title = 'TOP'
+	- const title = 'DIALOG'
 block contents
-	j-dialog#dia-1(p-btn.close='true' @cb-close='cbClose')
+	.fc
+		#g-dir
+			each _ in Array(20)
+				.h10
+					button.primary.open-dialog
+						span.icon launch
+						span OPEN
+	j-dialog(p-btn.close='true' @cb-close='cbClose')
 		p HOGE
 		p HOGE
 		p HOGE
-	j-dialog#dia-2(p-btn.close='true')
-		p HOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGEHOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-		p HOGE
-	button#dia-1-open DIA 1
-	button#dia-2-open DIA 2
 	script(type='module').
 		import jQC from './js/jq/jqc.min.js'
 		await jQC.import('j-dialog')
@@ -43,5 +22,27 @@ block contents
 		}
 		const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
 		$('#dia-1-open').click(() => { $dia1.open() })
-		$('#dia-2-open').click(() => { $dia2.open() })
-		$dia1.open()
+		// $('#dia-2-open').click(() => { $dia2.open() })
+		// $dia1.open()
+
+		$('#open-dialog').click(e => {
+			$dia1.open()
+		})
+	style
+		:scss
+			#g-dir {
+				display: grid;
+				justify-items: center;
+				grid-template-columns: repeat(3, 1fr);
+				grid-auto-rows: 1fr;
+				width: 100%;
+				height: 200vh;
+				gap: 0.5rem;
+				padding: 0.5rem;
+				overflow-y: auto;
+				& > :nth-child(3n+1) { justify-self: start; }
+				& > :nth-child(3n)	 { justify-self: end; }
+			}
+			.dialog-anchor {
+				anchor-name: --anchor
+			}
