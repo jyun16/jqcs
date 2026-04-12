@@ -1,6 +1,7 @@
 import $ from './jq.js'
 import jQSON from './jqson.js'
 import { setMapVal } from './jq-utils.js'
+import { jqpug } from './jq-pug.js'
 import jQT, { buildByHTML } from './jqt4dom.js'
 
 const d = console.log
@@ -11,13 +12,13 @@ const jQC = (function() {
 	const defs = {}
 	const ids = {}
 	const names = {}
-	const jqcIds = {}
+	const jqcCache = {}
 	const idSeq = {}
 	const replaceEvent = { stop: [ 'click', 'e.stopPropagation()' ] }
 
 	function define(name, def) {
 		if (!name || typeof def != 'object') return
-		def.html = def.html || ''
+		def.html = def.pug ? jqpug(def.pug) : def.html
 		def.ast = def.ast
 		def.css = def.css || ''
 		def.globalCss = def.globalCss || ''
@@ -25,9 +26,6 @@ const jQC = (function() {
 		def.init = def.init || function() {}
 		def.render = def.render || function() {}
 		def.methods = def.methods || {}
-
-		d(def.methods)
-
 		defs[name] = def
 	}
 
@@ -54,7 +52,7 @@ const jQC = (function() {
 			for (const $el of this._nodes) {
 				$el.remove()
 				const id = $el.attr('jqc-id')
-				delete jqcIds[id]
+				delete jqcCache[id]
 			}
 		}
 		empty() {
@@ -62,14 +60,14 @@ const jQC = (function() {
 				const el = $el.el(0)
 				if (!el) continue
 				const id = el.getAttribute('jqc-id')
-				delete jqcIds[id]
+				delete jqcCache[id]
 				el.removeAttribute('jqc-id')
 				el.innerHTML = ''
 			}
 			return this
 		}
 		async ready() {
-			const promises = this._nodes.map(n => jqcIds[n.attr('jqc-id')]?._ready).filter(p => p)
+			const promises = this._nodes.map(n => jqcCache[n.attr('jqc-id')]?._ready).filter(p => p)
 			await Promise.all(promises)
 			return this
 		}
@@ -96,7 +94,7 @@ const jQC = (function() {
 		const alive = []
 		for (const el of boundNodes) {
 			const id = el.getAttribute('jqc-id')
-			if (jqcIds[id]) alive.push(jqcIds[id])
+			if (jqcCache[id]) alive.push(jqcCache[id])
 		}
 		const nodes = rootEl.querySelectorAll(`${name}:not([jqc-id])`)
 		if (nodes.length == 0) return new jQCList(alive)
@@ -148,7 +146,14 @@ const jQC = (function() {
 				let val = raw
 				if (k.startsWith('p-')) {
 					const pkey = toCamel(k.slice(2))
-					val = /^\w+\(\)$/.test(raw) ? globalThis[raw.slice(0, -2)]?.() :jQSON.parse(raw)
+					try {
+						if (/^\w+\(\)$/.test(raw)) {
+							val = globalThis[raw.slice(0, -2)]?.()
+						}
+						else {
+							val = jQSON.parse(raw)
+						}
+					} catch (e) {}
 					setMapVal($el.p, pkey, val)
 					el.removeAttribute(k)
 				}
@@ -174,7 +179,7 @@ const jQC = (function() {
 			Object.assign($el, def.methods)
 			bindCB($el, el)
 			$el.attr('jqc-id', id)
-			jqcIds[id] = $el
+			jqcCache[id] = $el
 			const parsed = def.ast ? def.ast : buildByHTML(def.html)
 			$el._caller = caller
 			$el._parsed = parsed
@@ -326,10 +331,12 @@ const jQC = (function() {
 			let method = cb[k]
 			if (!method) return
 			method = method.replace(/(\(.*\))?$/, '')
-			if ($el._caller && typeof $el._caller[method] == 'function') {
-				return callMethodCB($el._caller, method, $el, ...args)
-			}
-			return callMethodCB(globalThis, method, $el, ...args)
+			try {
+				if ($el._caller && typeof $el._caller[method] == 'function') {
+					return callMethodCB($el._caller, method, $el, ...args)
+				}
+				return callMethodCB(globalThis, method, $el, ...args)
+			} catch (e) {}
 		}
 	}
 

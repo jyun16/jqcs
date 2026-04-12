@@ -128,14 +128,12 @@
             import jQC from './js/jq/jqc.min.js'
             await jQC.import('j-dialog')
             const d = console.log
-            globalThis.cbClose = function() {
-            	d('called cbClose', this.find('dialog').id())
+            globalThis.cbClose = function(a) {
+            	d('cbClose:', a)
             }
-            const [ $dia1, $dia2 ] = jQC.bind('j-dialog')
-            // $('#dia-2-open').click(() => { $dia2.open() })
-            // $dia1.open()
+            const [ $dia1 ] = jQC.bind('j-dialog')
             $('.open-dialog').click(function() {
-            	$dia1.open('hoge')
+            	$dia1.open(this)
             })
           </script>
           <style>#g-dir {
@@ -154,10 +152,6 @@
 }
 #g-dir > :nth-child(3n) {
   justify-self: end;
-}
-
-.dialog-anchor {
-  anchor-name: --anchor;
 }
           </style>
         </main>

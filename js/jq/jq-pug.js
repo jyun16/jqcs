@@ -34,7 +34,12 @@ function processLine(rawLine, stack) {
 	else {
 		const node = { tag: p.tag, attrs: p.attrs, text: p.text || null, children: [], indent: p.indent }
 		parent.children.push(node)
-		if (!p.text) stack.push(node)
+		if (!p.text && !p.childLine) stack.push(node)
+		if (p.childLine) {
+			stack.push(node)
+			processLine('\t'.repeat(p.indent + 1) + p.childLine, stack)
+			stack.pop()
+		}
 	}
 }
 
@@ -76,28 +81,19 @@ function parseLine(line) {
 	if (trimmed.startsWith('|')) {
 		return { indent, tag: '__TEXT__', attrs: [], text: trimmed.startsWith('| ') ? trimmed.slice(2) : trimmed.slice(1) }
 	}
-	let mEnd = 0
+	let i = 0
 	const tLen = trimmed.length
-	while (mEnd < tLen && trimmed[mEnd] !== ' ' && trimmed[mEnd] !== '\t' && trimmed[mEnd] !== '(') mEnd++
-	let tagPart = trimmed.substring(0, mEnd)
-	if (!tagPart) {
-		return { indent, tag: null, attrs: [], text: '' }
-	}
-	const isEval = tagPart.trim().endsWith('=')
-	if (isEval) { tagPart = tagPart.replace(/=$/, '') }
-	const rest = trimmed.substring(mEnd).trim()
-	let text = rest
+	while (i < tLen && trimmed[i] !== ' ' && trimmed[i] !== '\t' && trimmed[i] !== '(' && trimmed[i] !== ':' && trimmed[i] !== '=') i++
+	const tagPart = trimmed.substring(0, i)
+	if (!tagPart) return { indent, tag: null, attrs: [], text: '' }
 	let attrsStr = ''
-	if (isEval && text) {
-		text = new Function('return ' + text)()
-	}
-	if (rest.startsWith('(')) {
+	if (i < tLen && trimmed[i] === '(') {
 		let balance = 0
 		let inSingle = false
 		let inDouble = false
-		let splitIndex = -1
-		for (let i = 0, len = rest.length; i < len; i++) {
-			const char = rest[i]
+		let startAttr = i
+		for (; i < tLen; i++) {
+			const char = trimmed[i]
 			if (char === "'" && !inDouble) inSingle = !inSingle
 			else if (char === '"' && !inSingle) inDouble = !inDouble
 			else if (!inSingle && !inDouble) {
@@ -105,17 +101,33 @@ function parseLine(line) {
 				else if (char === ')') balance--
 			}
 			if (balance === 0) {
-				splitIndex = i + 1
+				i++
 				break
 			}
 		}
-		if (splitIndex !== -1) {
-			attrsStr = rest.substring(0, splitIndex)
-			text = rest.substring(splitIndex).trim()
-		}
+		attrsStr = trimmed.substring(startAttr, i)
+	}
+	const rest = trimmed.substring(i).trim()
+	let tagType = ''
+	let text = rest
+	if (text.startsWith('=')) {
+		tagType = 'eval'
+		text = text.slice(1).trim()
+	}
+	else if (text.startsWith(':')) {
+		tagType = 'block'
+		text = text.slice(1).trim()
+	}
+	let childLine = ''
+	if (tagType === 'eval' && text) {
+		text = new Function('return ' + text)()
+	}
+	else if (tagType === 'block') {
+		childLine = text
+		text = ''
 	}
 	const { tag, attrs } = buildAttributes(tagPart, attrsStr)
-	return { indent, tag, attrs, text }
+	return { indent, tag, attrs, text, childLine }
 }
 
 function parseTagPart(tagPart) {

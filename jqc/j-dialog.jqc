@@ -23,21 +23,31 @@ head
 	const d = console.log
 init
 	this.render()
-	/* this.find('dialog').el(0).showModal() */
+	this.$this = this.find('dialog')
 methods
 	open(el) {
-		const dia = this.find('dialog').el(0)
-		d(el.outerHTML)
-		/* el.classList.add('dialog-anchor') */
-		/* dia.classList.add('position-anchor') */
-		dia.showModal()
+		const $this = this.$this
+		el.classList.add('dialog-anchor')
+		$this.addClass('position-anchor')
+		$this.el(0).showModal()
+		this.anchorEl = el
 	},
 	close() {
+		const $this = this.$this
 		this.cb('close')
-		this.find('dialog').el(0).close()
+		if (this.anchorEl) {
+			this.anchorEl.classList.remove('dialog-anchor')
+			this.anchorEl = null
+		}
+		this.$this.removeClass('position-anchor')
+		this.$this.el(0).close()
 	},
 	clickOutside(e) {
 		if (e.target.tagName === 'DIALOG') this.close()
+	}
+globalScss
+	.dialog-anchor {
+		anchor-name: --anchor
 	}
 scss
 	dialog {
@@ -51,12 +61,9 @@ scss
 		&::backdrop {
 			background: rgba(0, 0, 0, 0.6);
 		}
-		.position-anchor {
+		&.position-anchor {
 			position-anchor: --anchor;
 			position-area: bottom span-right;
 			position-try-fallbacks: bottom span-left, top span-left;
 		}
-	}
-	.dialog-anchor {
-		anchor-name: --anchor
 	}
