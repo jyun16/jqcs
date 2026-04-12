@@ -9,13 +9,11 @@ block contents
 					button.fm.primary.open-dialog
 						span.icon launch
 						span OPEN
-	j-dialog(p-btn.close='true' @cb-close='cbClose')
-		div(slot='header')
+	j-dialog.vw30(p-x='center' p-y='top' p-height=20 p-btn.close='true' @cb-close='cbClose')
+		slot(name='header')
 			span.icon person
 			span= 'INFO'.repeat(10)
-		p HOGE
-		p HOGE
-		p HOGE
+		p= '0123456789'.repeat(500)
 	script(type='module').
 		import jQC from './js/jq/jqc.min.js'
 		await jQC.import('j-dialog')
@@ -24,7 +22,6 @@ block contents
 			d('cbClose')
 		}
 		const [ $dia1 ] = jQC.bind('j-dialog')
-		$dia1.open()
 		$('.open-dialog').click(function() {
 			$dia1.open(this)
 		})

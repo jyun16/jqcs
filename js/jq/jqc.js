@@ -12,7 +12,7 @@ const jQC = (function() {
 	const defs = {}
 	const ids = {}
 	const names = {}
-	const jqcCache = {}
+	const jqcIds = {}
 	const idSeq = {}
 	const replaceEvent = { stop: [ 'click', 'e.stopPropagation()' ] }
 
@@ -52,7 +52,7 @@ const jQC = (function() {
 			for (const $el of this._nodes) {
 				$el.remove()
 				const id = $el.attr('jqc-id')
-				delete jqcCache[id]
+				delete jqcIds[id]
 			}
 		}
 		empty() {
@@ -60,14 +60,14 @@ const jQC = (function() {
 				const el = $el.el(0)
 				if (!el) continue
 				const id = el.getAttribute('jqc-id')
-				delete jqcCache[id]
+				delete jqcIds[id]
 				el.removeAttribute('jqc-id')
 				el.innerHTML = ''
 			}
 			return this
 		}
 		async ready() {
-			const promises = this._nodes.map(n => jqcCache[n.attr('jqc-id')]?._ready).filter(p => p)
+			const promises = this._nodes.map(n => jqcIds[n.attr('jqc-id')]?._ready).filter(p => p)
 			await Promise.all(promises)
 			return this
 		}
@@ -94,7 +94,7 @@ const jQC = (function() {
 		const alive = []
 		for (const el of boundNodes) {
 			const id = el.getAttribute('jqc-id')
-			if (jqcCache[id]) alive.push(jqcCache[id])
+			if (jqcIds[id]) alive.push(jqcIds[id])
 		}
 		const nodes = rootEl.querySelectorAll(`${name}:not([jqc-id])`)
 		if (nodes.length == 0) return new jQCList(alive)
@@ -125,10 +125,16 @@ const jQC = (function() {
 				if (children.length > 0) {
 					const slots = {}
 					for (const child of children) {
-						const name = child.getAttribute('slot')
+						const isSlotTag = child.tagName === 'SLOT'
+						const name = child.getAttribute('slot') || (isSlotTag ? child.getAttribute('name') : null)
 						if (name) {
-							child.removeAttribute('slot')
-							slots[name] = child.outerHTML
+							if (isSlotTag) {
+								slots[name] = child.innerHTML
+							}
+							else {
+								child.removeAttribute('slot')
+								slots[name] = child.outerHTML
+							}
 							child.remove()
 						}
 					}
@@ -179,7 +185,7 @@ const jQC = (function() {
 			Object.assign($el, def.methods)
 			bindCB($el, el)
 			$el.attr('jqc-id', id)
-			jqcCache[id] = $el
+			jqcIds[id] = $el
 			const parsed = def.ast ? def.ast : buildByHTML(def.html)
 			$el._caller = caller
 			$el._parsed = parsed

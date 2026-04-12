@@ -1,53 +1,89 @@
 pug
-	dialog.vw30(@cancel='close' @mousedown='clickOutside(e)' {{ !attrs }} autofocus)
-		.card.vh30
+	dialog(@cancel='close' @mousedown='clickOutside(e)' {{ !attrs }} autofocus)
+		.card
 			.header
-				| {{ slots.header | raw }}
+				{% if slots.header %}
+					| {{ slots.header | raw }}
+				{% end %}
 				.right
-					span.close.icon close
+					span.close.icon(@click='close') close
 			.body(tabindex='-1')
 				| {{ slot | raw }}
-				p= '0123456789'.repeat(500)
-			{% if p.btn.close %}
+			{% if slots.footer %}
 				.footer
-					button.primary.close(autofocus) CLOSE
+					| {{ slots.footer | raw }}
+			{% else if p.btn.close %}
+				.footer
+					button.primary.close(@click='close' autofocus) CLOSE
 			{% end %}
 p
 	{
+		x: 'left',
+		y: 'bottom',
+		height: 40,
 		btn: {
 			close: true
-		}
+		},
 	}
 head
 	const d = console.log
 init
 	this.render()
-	this.$this = this.find('dialog')
+	const $this = this.find('dialog')
+	const p = this.p
+	const xMap = { left: 'span-right', right: 'span-left', center: '' }
+	const el = $this.el(0)
+	const x = xMap[p.x]
+	el.style.setProperty('--area', `${p.y} ${x}`)
+	$this.find('.card').css('height', p.height + 'vh')
+	this.$this = $this
 methods
-	open(el) {
+	open(anchor) {
 		const $this = this.$this
-		if (el) {
-			this.anchorEl = el
-			el.classList.add('dialog-anchor')
-			$this.addClass('position-anchor')
+		if (anchor) {
+			const el = $this.el(0)
+			this.anchor = anchor
+			anchor.classList.add('anchor')
+			$this.addClass('anchored')
+			const p = this.p
+			let y = p.y
+			let x = p.x
+			const xMap = { left: 'span-right', right: 'span-left', center: '' }
+			el.style.setProperty('--area', `${y} ${xMap[x]}`)
+			el.showModal()
+			const ar = anchor.getBoundingClientRect()
+			const dr = el.getBoundingClientRect()
+			const w = window.innerWidth
+			const h = window.innerHeight
+			if (x === 'left' && ar.left + dr.width > w) x = 'right'
+			else if (x === 'right' && ar.right - dr.width < 0) x = 'left'
+			else if (x === 'center') {
+				const cx = ar.left + ar.width / 2
+				const dw2 = dr.width / 2
+				if (cx + dw2 > w) x = 'right'
+				else if (cx - dw2 < 0) x = 'left'
+			}
+			if (y === 'bottom' && ar.bottom + dr.height > h) y = 'top'
+			else if (y === 'top' && ar.top - dr.height < 0) y = 'bottom'
+			el.style.setProperty('--area', `${y} ${xMap[x]}`)
 		}
 		$this.el(0).showModal()
 	},
 	close() {
 		const $this = this.$this
 		this.cb('close')
-		if (this.anchorEl) {
-			this.anchorEl.classList.remove('dialog-anchor')
-			this.anchorEl = null
+		if (this.anchor) {
+			this.anchor.classList.remove('anchor')
+			this.anchor = null
 		}
-		this.$this.removeClass('position-anchor')
+		this.$this.removeClass('anchord')
 		this.$this.el(0).close()
 	},
 	clickOutside(e) {
 		if (e.target.tagName === 'DIALOG') this.close()
 	}
 globalScss
-	.dialog-anchor {
+	.anchor {
 		anchor-name: --anchor
 	}
 scss
@@ -62,9 +98,8 @@ scss
 		&::backdrop {
 			background: rgba(0, 0, 0, 0.6);
 		}
-		&.position-anchor {
+		&.anchored {
 			position-anchor: --anchor;
-			position-area: bottom span-right;
-			position-try-fallbacks: bottom span-left, top span-left;
+			position-area: var(--area);
 		}
 	}

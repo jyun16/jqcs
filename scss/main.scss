@@ -283,6 +283,7 @@ button,input[type='button'],input[type='submit'] {
 @mixin cardHF {
 	@include iconText;
 	position: relative;
+	height: 2.5rem;
 	padding: 0 2rem;
 	text-align: center;
 	overflow: hidden;
