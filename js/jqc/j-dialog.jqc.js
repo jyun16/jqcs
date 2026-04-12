@@ -29,7 +29,7 @@ jQC.define('j-dialog', {
   css: "dialog {\n  position: fixed;\n  max-width: 90vw;\n  max-height: 80vh;\n  margin: 10px 0 !important;\n}\ndialog .body:focus {\n  outline: none;\n}\ndialog::backdrop {\n  background: rgba(0, 0, 0, 0.6);\n}\ndialog.full {\n  margin: auto !important;\n}\ndialog.anchored {\n  position-anchor: --anchor;\n  position-area: var(--area);\n}",
   globalCss: ".anchor {\n  anchor-name: --anchor;\n}",
   p: {
-	full: true,
+	full: false,
 	x: 'left',
 	y: 'bottom',
 	height: 40,

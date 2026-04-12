@@ -18,7 +18,7 @@ pug
 			{% end %}
 p
 	{
-		full: true,
+		full: false,
 		x: 'left',
 		y: 'bottom',
 		height: 40,

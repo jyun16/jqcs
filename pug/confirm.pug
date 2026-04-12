@@ -1,0 +1,18 @@
+extends ./_layout/main.pug
+block vars
+	- const title = 'DIALOG'
+block contents
+	button.primary.open-confirm
+		span.icon launch
+		span OPEN
+	j-confirm.vw50(p-x='center')
+	script(type='module').
+		import jQC from './js/jq/jqc.min.js'
+		await jQC.import('j-confirm')
+		const d = console.log
+		const [ $confirm ] = jQC.bind('j-confirm')
+		$('.open-confirm').click(function() {
+			$confirm.open(this)
+		})
+	style
+		:scss
