@@ -120,6 +120,7 @@
             </div>
           </div>
           <j-dialog p-btn.close="true" @cb-close="cbClose">
+            <div slot="header"><span class="icon">person</span><span>INFOINFOINFOINFOINFOINFOINFOINFOINFOINFO</span></div>
             <p>HOGE</p>
             <p>HOGE</p>
             <p>HOGE</p>
@@ -128,10 +129,11 @@
             import jQC from './js/jq/jqc.min.js'
             await jQC.import('j-dialog')
             const d = console.log
-            globalThis.cbClose = function(a) {
-            	d('cbClose:', a)
+            globalThis.cbClose = function() {
+            	d('cbClose')
             }
             const [ $dia1 ] = jQC.bind('j-dialog')
+            $dia1.open()
             $('.open-dialog').click(function() {
             	$dia1.open(this)
             })

@@ -10,6 +10,9 @@ block contents
 						span.icon launch
 						span OPEN
 	j-dialog(p-btn.close='true' @cb-close='cbClose')
+		div(slot='header')
+			span.icon person
+			span= 'INFO'.repeat(10)
 		p HOGE
 		p HOGE
 		p HOGE
@@ -17,10 +20,11 @@ block contents
 		import jQC from './js/jq/jqc.min.js'
 		await jQC.import('j-dialog')
 		const d = console.log
-		globalThis.cbClose = function(a) {
-			d('cbClose:', a)
+		globalThis.cbClose = function() {
+			d('cbClose')
 		}
 		const [ $dia1 ] = jQC.bind('j-dialog')
+		$dia1.open()
 		$('.open-dialog').click(function() {
 			$dia1.open(this)
 		})

@@ -2,12 +2,11 @@ pug
 	dialog.vw30(@cancel='close' @mousedown='clickOutside(e)' {{ !attrs }} autofocus)
 		.card.vh30
 			.header
-				span.icon person
-				span= 'INFO'.repeat(10)
+				| {{ slots.header | raw }}
 				.right
 					span.close.icon close
 			.body(tabindex='-1')
-				.content {{ slot | raw }}
+				| {{ slot | raw }}
 				p= '0123456789'.repeat(500)
 			{% if p.btn.close %}
 				.footer
@@ -27,10 +26,12 @@ init
 methods
 	open(el) {
 		const $this = this.$this
-		el.classList.add('dialog-anchor')
-		$this.addClass('position-anchor')
+		if (el) {
+			this.anchorEl = el
+			el.classList.add('dialog-anchor')
+			$this.addClass('position-anchor')
+		}
 		$this.el(0).showModal()
-		this.anchorEl = el
 	},
 	close() {
 		const $this = this.$this
