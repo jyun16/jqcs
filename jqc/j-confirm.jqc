@@ -1,11 +1,12 @@
 pug
 	j-dialog
-		p HOGE
+		p {{ msg }}
 		slot(name='footer')
 			button.secondary(@click='close') Cancel
 			button.primary(@click='close' autofocus) OK
 p
 	{
+		msg: ''
 	}
 head
 	const d = console.log
@@ -13,6 +14,12 @@ async init
 	await jQC.import('j-dialog')
 	this.render()
 	const $dia = jQC.bind('j-dialog', this)
+	this.$dia = $dia
 methods
-
+	open(msg) {
+		this.p.msg = msg
+		this.$dia.render()
+		this.render()
+		this.$dia.open()
+	}
 scss
