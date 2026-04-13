@@ -1,9 +1,9 @@
 import jQC from '../../../src/jqc.js'
 
 jQC.define('j-radio', {
-  html: `{% for v, l in p.opts %}
+  html: `{% for v, l in opts %}
 	<label>
-		<input type='radio' value='{{ v }}' @change='change(e)' '{{ !attrs }}' '{% if p.val == v %}checked{% end %}'>{{ l }}</input>
+		<input type='radio' value='{{ v }}' @change='change(e)' '{{ !attrs }}' '{% if val == v %}checked{% end %}'>{{ l }}</input>
 	</label>
 {% end %}`,
   

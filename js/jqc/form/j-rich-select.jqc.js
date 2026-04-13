@@ -4,18 +4,18 @@ await jQC.import('modal')
 let $modal = null
 jQC.define('j-rich-select', {
   html: `<div class="tags" @click='toggleOpts()' '{{ !attrs }}'>
-	{% for k in p.vals %}
+	{% for k in vals %}
 		<div class="tag">
-			<div class="lbl">{{ p.opts[k] }}</div>
+			<div class="lbl">{{ opts[k] }}</div>
 			<div class="rm material-symbols-outlined" @click="rmVal('{{ k }}')">close</div>
 		</div>
 	{% end %}
 	<modal>
 		<div class="opts">
-			<input type='text' @typed='filter(e)' @stop="@stop" value='{{ p.filter }}'></input>
+			<input type='text' @typed='filter(e)' @stop="@stop" value='{{ filter }}'></input>
 			<ul>
-				{% for k, v in p.opts %}
-					{% if (!p.vals.includes(k) && v.includes(p.filter)) %}
+				{% for k, v in opts %}
+					{% if (!vals.includes(k) && v.includes(filter)) %}
 						<li @click="select('{{ k }}')">{{ v }}</li>
 					{% end %}
 				{% end %}

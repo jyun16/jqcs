@@ -101,6 +101,10 @@ const jQC = (function() {
 		idSeq[name] = idSeq[name] || 0
 		let ret = []
 		function render(def, $el) {
+			$el._tplData = Object.assign(Object.create(null), $el.p, { attrs: $el.attrs })
+			// $el._tplData = { p: $el.p, attrs: $el.attrs }
+			if ($el._slot) { $el._tplData.slot = $el._slot }
+			if ($el._slots) { $el._tplData.slots = $el._slots }
 			if (typeof def.preRender === 'function') def.preRender.call($el)
 			if (!$el._mountedDOM) {
 				const frag = jQT.go($el._parsed, $el._tplData)
@@ -191,9 +195,6 @@ const jQC = (function() {
 			$el._parsed = parsed
 			$el._index = parsed.nodes
 			$el.attrs = $el.attrs.trim()
-			$el._tplData = { p: $el.p, attrs: $el.attrs }
-			if ($el._slot) { $el._tplData.slot = $el._slot }
-			if ($el._slots) { $el._tplData.slots = $el._slots }
 			$el._domMap = {}
 			$el.stash = {}
 			$el.render = () => render(def, $el)

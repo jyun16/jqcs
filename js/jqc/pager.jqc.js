@@ -2,19 +2,19 @@ import jQC from '../../src/jqc.js'
 const d = console.log
 jQC.define('pager', {
   html: `<ul>
-	{% if p.page > 1 %}
-		{% if p.total > 10 %}
-			<li @click='jump(1)'>{{ ro:p.label.first }}</li>
+	{% if page > 1 %}
+		{% if total > 10 %}
+			<li @click='jump(1)'>{{ ro:label.first }}</li>
 		{% end %}
-		<li @click='prev()'>{{ ro:p.label.prev }}</li>
+		<li @click='prev()'>{{ ro:label.prev }}</li>
 	{% end %}
-	{% for n in p.first..p.last %}
-		<li @click='jump({{ n }})' class='{{ p.page == n ? "active" : "" }}'>{{ n }}</li>
+	{% for n in first..last %}
+		<li @click='jump({{ n }})' class='{{ page == n ? "active" : "" }}'>{{ n }}</li>
 	{% end %}
-	{% if p.page != p.total %}
-		<li @click='next()'>{{ ro:p.label.next }}</li>
-		{% if p.total > 10 %}
-			<li @click='jump({{ p.total }})'>{{ ro:p.label.last }}</li>
+	{% if page != total %}
+		<li @click='next()'>{{ ro:label.next }}</li>
+		{% if total > 10 %}
+			<li @click='jump({{ total }})'>{{ ro:label.last }}</li>
 		{% end %}
 	{% end %}
 </ul>`,

@@ -1,6 +1,6 @@
 pug
-	form.jqc-hide(@submit='submit(e)')
-		{% for k, v in p.conf %}
+	form(@submit='submit(e)')
+		{% for k, v in conf %}
 			.line
 				.label {{ v.label }}
 				.input
@@ -64,8 +64,8 @@ methods
 			this.f[n].p.val = val[n]
 			ret = jQC.queueRender(this.f[n])
 		}
-		if (ret) { ret.then(() => this.find('form').removeClass('jqc-hide')) }
-		else { this.find('form').removeClass('jqc-hide') }
+		if (ret) { ret.then(() => this.addClass('visible')) }
+		else { this.addClass('visible') }
 		return ret
 	},
 	submit(e) {
@@ -77,6 +77,8 @@ methods
 		return this.find('form').serialize()
 	},
 scss
+	this { visibility: hidden; }
+	this.visible { visibility: visible; }
 	form {
 		display: flex;
 		flex-direction: column;

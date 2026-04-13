@@ -1,7 +1,7 @@
 pug
-	{% for v, l in p.opts %}
+	{% for v, l in opts %}
 		label
-			input(type='checkbox' value!='{{ v }}' @change='change(e)' '{{ !attrs }}' {% if p.val.includes(v) %}checked{% end %}) {{ l }}
+			input(type='checkbox' value!='{{ v }}' @change='change(e)' '{{ !attrs }}' {% if val.includes(v) %}checked{% end %}) {{ l }}
 	{% end %}
 p
 	{ name: '', val: [] }

@@ -1,16 +1,16 @@
 pug
 	.tags(@click='toggleOpts()' '{{ !attrs }}')
-		{% for k in p.vals %}
+		{% for k in vals %}
 			.tag
-				.lbl {{ p.opts[k] }}
+				.lbl {{ opts[k] }}
 				.rm.material-symbols-outlined(@click!="rmVal('{{ k }}')") close
 		{% end %}
 		modal
 			.opts
-				input(type='text' @typed='filter(e)' @stop value!='{{ p.filter }}')
+				input(type='text' @typed='filter(e)' @stop value!='{{ filter }}')
 				ul
-					{% for k, v in p.opts %}
-						{% if (!p.vals.includes(k) && v.includes(p.filter)) %}
+					{% for k, v in opts %}
+						{% if (!vals.includes(k) && v.includes(filter)) %}
 							li(@click!="select('{{ k }}')") {{ v }}
 						{% end %}
 					{% end %}

@@ -1,8 +1,8 @@
 import jQC from '../../../src/jqc.js'
 const d = console.log
 jQC.define('j-form', {
-  html: `<form class="jqc-hide" @submit='submit(e)'>
-	{% for k, v in p.conf %}
+  html: `<form @submit='submit(e)'>
+	{% for k, v in conf %}
 		<div class="line">
 			<div class="label">{{ v.label }}</div>
 			<div class="input">
@@ -33,7 +33,7 @@ jQC.define('j-form', {
 	</div>
 </form>`,
   
-  css: "form {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  margin: 0 auto;\n  padding: 0.5rem;\n  gap: 0.5rem;\n}\nform .line {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\nform .line .label {\n  min-width: 200px;\n}\nform .line .input {\n  flex: 1;\n}\nform .actions {\n  display: flex;\n  justify-content: center;\n}\nform button.primary {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-width: 200px;\n  border: 0;\n  border-radius: 5px;\n  color: white;\n  background-color: #0066ff;\n  font-weight: bold;\n  padding: 0.7rem;\n  cursor: pointer;\n}",
+  css: "this {\n  visibility: hidden;\n}\n\nthis.visible {\n  visibility: visible;\n}\n\nform {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  margin: 0 auto;\n  padding: 0.5rem;\n  gap: 0.5rem;\n}\nform .line {\n  display: flex;\n  flex-direction: row;\n  align-items: center;\n}\nform .line .label {\n  min-width: 200px;\n}\nform .line .input {\n  flex: 1;\n}\nform .actions {\n  display: flex;\n  justify-content: center;\n}\nform button.primary {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  min-width: 200px;\n  border: 0;\n  border-radius: 5px;\n  color: white;\n  background-color: #0066ff;\n  font-weight: bold;\n  padding: 0.7rem;\n  cursor: pointer;\n}",
   globalCss: "@media (width < 600px) {\n  form .line {\n    display: flex;\n    flex-direction: column;\n    flex-wrap: wrap;\n    align-items: flex-start;\n  }\n  form .line .label {\n    width: 100%;\n  }\n}",
   p: { name: 'form', conf: {}, initRender: true },
   async init() {
@@ -71,8 +71,8 @@ renderVal(val) {
 		this.f[n].p.val = val[n]
 		ret = jQC.queueRender(this.f[n])
 	}
-	if (ret) { ret.then(() => this.find('form').removeClass('jqc-hide')) }
-	else { this.find('form').removeClass('jqc-hide') }
+	if (ret) { ret.then(() => this.addClass('visible')) }
+	else { this.addClass('visible') }
 	return ret
 },
 submit(e) {

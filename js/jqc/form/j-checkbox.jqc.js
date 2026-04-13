@@ -1,9 +1,9 @@
 import jQC from '../../../src/jqc.js'
 
 jQC.define('j-checkbox', {
-  html: `{% for v, l in p.opts %}
+  html: `{% for v, l in opts %}
 	<label>
-		<input type='checkbox' value='{{ v }}' @change='change(e)' '{{ !attrs }}' {% if p.val.includes(v) %}checked{% end %}>{{ l }}</input>
+		<input type='checkbox' value='{{ v }}' @change='change(e)' '{{ !attrs }}' {% if val.includes(v) %}checked{% end %}>{{ l }}</input>
 	</label>
 {% end %}`,
   

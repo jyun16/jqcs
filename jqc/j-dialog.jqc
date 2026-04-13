@@ -12,7 +12,7 @@ pug
 			{% if slots.footer %}
 				.footer
 					| {{ slots.footer | raw }}
-			{% else if p.btn.close %}
+			{% else if btn.close %}
 				.footer
 					button.primary.close(@click='close' autofocus) CLOSE
 			{% end %}

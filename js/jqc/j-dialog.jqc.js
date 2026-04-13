@@ -18,7 +18,7 @@ jQC.define('j-dialog', {
 			<div class="footer">
 				{{ slots.footer | raw }}
 			</div>
-		{% else if p.btn.close %}
+		{% else if btn.close %}
 			<div class="footer">
 				<button class="primary close" @click='close' autofocus="autofocus">CLOSE</button>
 			</div>
