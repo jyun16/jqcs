@@ -1,18 +1,21 @@
 pug
-	j-dialog(p-btn.close=false)
-		p {{ msg }}
+	j-dialog(p-full=true p-btn.close=false p-height='{{ height }}' p-min-height='{{ minHeight }}')
+		p.fc {{ msg }}
 		div(slot='footer')
 			button.secondary(@click='close') Cancel
 			button.primary(@click='close' autofocus) OK
 p
 	{
-		msg: 'HOGE'
+		msg: 'HOGE',
+		height: 0,
+		minHeight: 16,
 	}
 head
 	const d = console.log
 init
 	this.render()
 	const $dia = jQC.bind('j-dialog', this)
+	d(this.p)
 	$dia.open()
 	this.$dia = $dia
 methods
@@ -22,3 +25,5 @@ methods
 		this.$dia.open()
 	}
 scss
+	.card {
+	}
