@@ -1,5 +1,6 @@
 pug
-	.modal {{ slot | raw }}
+	.modal
+		slot
 p
 	{ show: false }
 head

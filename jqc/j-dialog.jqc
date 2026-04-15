@@ -2,20 +2,16 @@ pug
 	dialog(@cancel='close' @mousedown='clickOutside(e)' {{ !attrs }} autofocus)
 		.card
 			.header
-				{% if slots.header %}
-					| {{ slots.header | raw }}
-				{% end %}
+				slot(name='header')
 				.right
 					span.close.icon(@click='close') close
 			.body(tabindex='-1')
-				| {{ slot | raw }}
-			{% if slots.footer %}
-				.footer
-					| {{ slots.footer | raw }}
-			{% else if btn.close %}
-				.footer
+				slot
+			.footer
+				slot(name='footer')
+				{% if btn.close %}
 					button.primary.close(@click='close' autofocus) CLOSE
-			{% end %}
+				{% end %}
 p
 	{
 		full: false,

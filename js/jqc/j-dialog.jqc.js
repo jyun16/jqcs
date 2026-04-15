@@ -4,25 +4,20 @@ jQC.define('j-dialog', {
   html: `<dialog @cancel='close' @mousedown='clickOutside(e)' {{ !attrs }} autofocus>
 	<div class="card">
 		<div class="header">
-			{% if slots.header %}
-				{{ slots.header | raw }}
-			{% end %}
+			<slot name='header'></slot>
 			<div class="right">
 				<span class="close icon" @click='close'>close</span>
 			</div>
 		</div>
 		<div class="body" tabindex='-1'>
-			{{ slot | raw }}
+			<slot></slot>
 		</div>
-		{% if slots.footer %}
-			<div class="footer">
-				{{ slots.footer | raw }}
-			</div>
-		{% else if btn.close %}
-			<div class="footer">
+		<div class="footer">
+			<slot name='footer'></slot>
+			{% if btn.close %}
 				<button class="primary close" @click='close' autofocus="autofocus">CLOSE</button>
-			</div>
-		{% end %}
+			{% end %}
+		</div>
 	</div>
 </dialog>`,
   

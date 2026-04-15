@@ -1,7 +1,9 @@
 import jQC from '../../src/jqc.js'
 const d = console.log
 jQC.define('modal', {
-  html: `<div class="modal">{{ slot | raw }}</div>`,
+  html: `<div class="modal">
+	<slot></slot>
+</div>`,
   
   css: "this {\n  position: absolute;\n  width: 100%;\n  top: 5px;\n  left: 0;\n  z-index: 100;\n}",
   globalCss: "",

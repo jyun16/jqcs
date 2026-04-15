@@ -1,29 +1,28 @@
 import jQC from '../../src/jqc.js'
 const d = console.log
 jQC.define('j-confirm', {
-  html: `<j-dialog>
+  html: `<j-dialog p-btn.close="false">
 	<p>{{ msg }}</p>
-	<slot name='footer'>
+	<div slot='footer'>
 		<button class="secondary" @click='close'>Cancel</button>
 		<button class="primary" @click='close' autofocus="autofocus">OK</button>
-	</slot>
+	</div>
 </j-dialog>`,
   
   css: "",
   globalCss: "",
   p: {
-	msg: ''
+	msg: 'HOGE'
 },
-  async init() {
-await jQC.import('j-dialog')
+  init() {
 this.render()
 const $dia = jQC.bind('j-dialog', this)
+$dia.open()
 this.$dia = $dia
   },
   methods: {
 open(msg) {
 	this.p.msg = msg
-	this.$dia.render()
 	this.render()
 	this.$dia.open()
 }

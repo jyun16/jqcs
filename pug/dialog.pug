@@ -10,7 +10,7 @@ block contents
 						span.icon launch
 						span OPEN
 	j-dialog.vw30(p-x='center' p-y='top' p-height=20 p-btn.close='true' @cb-close='cbClose')
-		slot(name='header')
+		div(slot='header')
 			span.icon person
 			span= 'INFO'.repeat(10)
 		p= '0123456789'.repeat(500)
@@ -21,9 +21,10 @@ block contents
 		globalThis.cbClose = function() {
 			d('cbClose')
 		}
-		const [ $dia1 ] = jQC.bind('j-dialog')
+		const [ $dia ] = jQC.bind('j-dialog')
+		$dia.open(this)
 		$('.open-dialog').click(function() {
-			$dia1.open(this)
+			$dia.open(this)
 		})
 	style
 		:scss

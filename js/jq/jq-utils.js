@@ -1,7 +1,25 @@
 const d = console.log
 
+export function df(f) {
+  const div = document.createElement('div')
+  div.appendChild(f.cloneNode(true))
+  d(div.innerHTML)
+}
+
 export function ddom(...args) {
 	console.log(...args.map(x => isDOM(x) ? dom2html(x) : x))
+}
+
+export function isDOM(x) {
+	return x && typeof x === 'object' && typeof x.nodeType === 'number'
+}
+
+export function child2frag(el) {
+  const f = document.createDocumentFragment()
+  while (el.firstChild) {
+    f.append(el.firstChild)
+  }
+  return f
 }
 
 export function dom2html(dom) {
@@ -19,22 +37,8 @@ export function frag2html(frag) {
 	return div.outerHTML
 }
 
-export function isDOM(x) {
-	return x && typeof x === 'object' && typeof x.nodeType === 'number'
-}
-
-export function getObjVal(obj, path) {
-  let cur = obj
-  let start = 0
-  let end = path.indexOf('.')
-  while (end !== -1) {
-    if (cur == null) return undefined
-    cur = cur[path.substring(start, end)]
-    start = end + 1
-    end = path.indexOf('.', start)
-  }
-  if (cur == null) return undefined
-  return cur[path.substring(start)]
+export function isEmpty(v) {
+  return !v || (typeof v === 'object' && Object.keys(v).length === 0)
 }
 
 export function isEqual(a, b) {
@@ -55,6 +59,22 @@ export function isEqual(a, b) {
     if (!Object.prototype.hasOwnProperty.call(b, k) || !isEqual(a[k], b[k])) return false
   }
   return true
+}
+
+export function toCamel(s) { return s.replace(/-([a-z])/g, (_, c) => c.toUpperCase()) }
+
+export function getObjVal(obj, path) {
+  let cur = obj
+  let start = 0
+  let end = path.indexOf('.')
+  while (end !== -1) {
+    if (cur == null) return undefined
+    cur = cur[path.substring(start, end)]
+    start = end + 1
+    end = path.indexOf('.', start)
+  }
+  if (cur == null) return undefined
+  return cur[path.substring(start)]
 }
 
 export function diffObj(keys, obj, old) {

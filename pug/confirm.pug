@@ -8,9 +8,14 @@ block contents
 	j-confirm.vw50(p-x='center')
 	script(type='module').
 		import jQC from './js/jq/jqc.min.js'
+
+		await jQC.import('j-dialog')
 		await jQC.import('j-confirm')
+
 		const d = console.log
-		const [ $confirm ] = jQC.bind('j-confirm')
+		const [ $confirm ] = await jQC.bind('j-confirm').ready()
+		$confirm.p.msg = 'hoge'
+		$confirm.open('デフォルトメッセージ')
 		$('.open-confirm').click(function() {
 			$confirm.open('良いですか？そうですか')
 		})

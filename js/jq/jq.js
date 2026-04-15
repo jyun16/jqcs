@@ -528,8 +528,9 @@ class jQ {
 		}
 		return $.form2obj(fd)
 	}
-	debug() {
-		console.log(this.outerHTML())
+	debug(msg) {
+		if (msg) { console.log(msg, this.outerHTML()) }
+		else { console.log(this.outerHTML()) }
 	}
 	each(func) {
 		const els = this.el()

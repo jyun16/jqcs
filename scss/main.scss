@@ -2,9 +2,9 @@
 @use './var' as v;
 
 @font-face {
-  font-family: 'Material Symbols Outlined';
-  src: url('/fonts/material-symbols.woff2') format('woff2');
-  font-display: block;
+	font-family: 'Material Symbols Outlined';
+	src: url('/fonts/material-symbols.woff2') format('woff2');
+	font-display: block;
 }
 
 .icon {
@@ -282,6 +282,12 @@ button,input[type='button'],input[type='submit'] {
 
 @mixin cardHF {
 	@include iconText;
+	slot {
+		display: contents;
+	}
+	[slot="header"], [slot="footer"] {
+    display: inline;
+  }
 	position: relative;
 	height: 2.5rem;
 	padding: 0 2rem;

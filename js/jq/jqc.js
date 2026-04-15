@@ -1,6 +1,6 @@
 import $ from './jq.js'
 import jQSON from './jqson.js'
-import { setMapVal } from './jq-utils.js'
+import { df, isEmpty, toCamel, child2frag, setMapVal } from './jq-utils.js'
 import { jqpug } from './jq-pug.js'
 import jQT, { buildByHTML } from './jqt4dom.js'
 
@@ -77,16 +77,29 @@ const jQC = (function() {
 		}
 	}
 
-	const toCamel = (s) => s.replace(/-([a-z])/g, (_, c) => c.toUpperCase())
+	const attachSlot = (el, target) => {
+		if (!isEmpty(el._slots)) {
+			for (const n in el._slots) {
+				const slotTag = target.querySelector(`slot[name="${n}"]`)
+				if (slotTag) {
+					slotTag.innerHTML = ''
+					slotTag.appendChild(el._slots[n])
+				}
+			}
+		}
+		if (el._slot) {
+			const defSlot = target.querySelector('slot:not([name])')
+			if (defSlot) {
+				defSlot.innerHTML = ''
+				defSlot.appendChild(el._slot)
+			}
+		}
+	}
 
 	function bind(name, compOrCaller, caller) {
 		let comp = name
-		if (typeof compOrCaller == 'string') {
-			comp = compOrCaller
-		}
-		else {
-			caller = compOrCaller
-		}
+		if (typeof compOrCaller == 'string') { comp = compOrCaller }
+		else { caller = compOrCaller }
 		const def = defs[comp]
 		if (!def) return
 		const rootEl = caller ? caller.el(0) : document
@@ -100,51 +113,46 @@ const jQC = (function() {
 		if (nodes.length == 0) return new jQCList(alive)
 		idSeq[name] = idSeq[name] || 0
 		let ret = []
+		const hasSlot = (def.html && def.html.includes('<slot')) || (def.ast && JSON.stringify(def.ast).includes('"v":"slot'))
 		function render(def, $el) {
-			$el._tplData = Object.assign(Object.create(null), $el.p, { attrs: $el.attrs })
-			// $el._tplData = { p: $el.p, attrs: $el.attrs }
-			if ($el._slot) { $el._tplData.slot = $el._slot }
-			if ($el._slots) { $el._tplData.slots = $el._slots }
+			const el = $el.el(0)
 			if (typeof def.preRender === 'function') def.preRender.call($el)
+			$el._tplData = Object.assign(Object.create(null), $el.p, { attrs: $el.attrs })
 			if (!$el._mountedDOM) {
 				const frag = jQT.go($el._parsed, $el._tplData)
-				const container = $el.el(0)
-				container.innerHTML = ''
-				container.appendChild(frag)
-				$el._mountedDOM = container.firstChild
+				attachSlot(el, frag)
+				el.innerHTML = ''
+				el.appendChild(frag)
+				$el._mountedDOM = el.firstChild
 				bindEvents($el)
 			}
 			else {
+				if (hasSlot) {
+					const slots = {}
+					el.querySelectorAll('[slot]').forEach(el => {
+						slots[el.getAttribute('slot')] = child2frag(el)
+					})
+					if (!isEmpty(slots)) { el._slots = slots }
+					el._slot = child2frag(el.querySelector('slot'))
+				}
 				jQT.go($el._parsed, $el._tplData)
+				attachSlot(el, el)
 				bindEvents($el)
 			}
 			if (typeof def.postRender === 'function') def.postRender.call($el)
 		}
-		const hasSlot = (def.html && def.html.includes('slot')) || (def.ast && JSON.stringify(def.ast).includes('"v":"slot'))
 		for (const el of nodes) {
 			const id = name + '-' + idSeq[name]++
 			const $el = $(el)
 			if (hasSlot) {
-				const children = Array.from(el.children)
-				if (children.length > 0) {
-					const slots = {}
-					for (const child of children) {
-						const isSlotTag = child.tagName === 'SLOT'
-						const name = child.getAttribute('slot') || (isSlotTag ? child.getAttribute('name') : null)
-						if (name) {
-							if (isSlotTag) {
-								slots[name] = child.innerHTML
-							}
-							else {
-								child.removeAttribute('slot')
-								slots[name] = child.outerHTML
-							}
-							child.remove()
-						}
-					}
-					$el._slots = slots
-				}
-				$el._slot = el.innerHTML
+				const slots = {}
+				el.querySelectorAll('[slot]').forEach(el => {
+					const f = document.createDocumentFragment()
+					f.append(el)
+					slots[el.getAttribute('slot')] = f
+				})
+				if (!isEmpty(slots)) { el._slots = slots }
+				el._slot = child2frag(el)
 			}
 			el.innerHTML = ''
 			$el.p = JSON.parse(JSON.stringify(def.p || {}))
