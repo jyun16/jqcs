@@ -22,8 +22,7 @@ block contents
 		const d = console.log
 		const [ $alert ] = await jQC.bind('j-alert').ready()
 		const [ $confirm ] = await jQC.bind('j-confirm').ready()
-		$alert.open('デフォルトメッセージ')
-		$('.open-alert').click(function() { $confirm.open('アラート') })
+		$('.open-alert').click(function() { $alert.open('デフォルト'.repeat(10), 'アラート') })
 		$('.open-confirm').click(function() { $confirm.open('コンファーム') })
 		$('.open-prompt').click(function() { $confirm.open('プロンプト') })
 	style

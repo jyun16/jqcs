@@ -2,6 +2,7 @@ import jQC from '../../src/jqc.js'
 const d = console.log
 jQC.define('j-alert', {
   html: `<j-dialog p-full="true" p-btn.close="false" p-height='{{ height }}' p-min-height='{{ minHeight }}'>
+	<div slot='header'>{{ title }}</div>
 	<p class="fc">{{ msg }}</p>
 	<div slot='footer'>
 		<button class="primary" @click='close' autofocus="autofocus">CLOSE</button>
@@ -11,18 +12,21 @@ jQC.define('j-alert', {
   css: "",
   globalCss: "",
   p: {
+	title: '',
 	msg: '',
+	width: null,
+	minWidth: null,
 	height: null,
-	minHeight: null,
+	minHeight: 140,
 },
   init() {
 this.render()
-d(this.outerHTML())
 const $dia = jQC.bind('j-dialog', this)
 this.$dia = $dia
   },
   methods: {
-open(msg) {
+open(msg, title='') {
+	if (title) this.p.title = title
 	this.p.msg = msg
 	this.render()
 	this.$dia.open()

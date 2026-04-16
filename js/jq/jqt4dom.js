@@ -33,7 +33,7 @@ const jQT4DOM = (function() {
 	function renderExpr(expr, data) {
 		let [exp, ...pipe] = expr.split('|').map(s => s.trim())
 		let val = evalExpr(exp, data)
-		if (!pipe.length && typeof val === 'object') {
+		if (val != null && val != undefined && !pipe.length && typeof val === 'object') {
 			val =  JSON.stringify(val)
 		}
 		for (let p of pipe) {
@@ -171,7 +171,7 @@ const jQT4DOM = (function() {
 			}
 		}
 		else {
-			val += v
+			if (v != null && v != undefined) val += v
 		}
 		c._dom = el
 		c._attr = a.n
@@ -201,7 +201,7 @@ const jQT4DOM = (function() {
 				})
 				val = val.trim()
 				if (!shouldRender) return
-				if (a.n && val !== '') {
+				if (a.n && val != '' && val != null && val != undefined) {
 					let n = a.n
 					if (n) {
 						if (n.startsWith('@cb')) n = 'jqc-cb-' + n.slice(4)

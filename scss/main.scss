@@ -269,6 +269,7 @@ button,input[type='button'],input[type='submit'] {
 	@include iconText;
 	display: inline-flex;
 	justify-content: center;
+	align-items: center;
 	gap: .2rem;
 	cursor: pointer;
 	background: #6495ed;
@@ -330,10 +331,11 @@ button,input[type='button'],input[type='submit'] {
 	.header { @include cardHF; }
 	.body {
 		@include scrollbar;
+		margin: auto;
+		max-height: 50vh;
 		padding-left: .5rem;
 		overflow-y: scroll;
 		word-break: break-all;
-		max-height: 50vh;
 	}
 	.footer { @include cardHF; }
 }
