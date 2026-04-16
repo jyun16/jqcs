@@ -13,6 +13,7 @@ head
 	const d = console.log
 init
 	this.render()
+	d(this.outerHTML())
 	const $dia = jQC.bind('j-dialog', this)
 	this.$dia = $dia
 methods

@@ -17,6 +17,7 @@ jQC.define('j-alert', {
 },
   init() {
 this.render()
+d(this.outerHTML())
 const $dia = jQC.bind('j-dialog', this)
 this.$dia = $dia
   },

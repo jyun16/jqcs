@@ -219,6 +219,7 @@ function parseParenthesesAttrs(attrs) {
 		while (i < len && /\s/.test(c[i])) i++
 		const v = parseAttributeValue(c, i)
 		i = v.next
+		if (v.c === 'null') continue
 		const av = isRaw ? v.c : escapeAttributeValue(v.c)
 		const q = v.q || '"'
 		ret.push(`${key}=${q}${av}${q}`)
