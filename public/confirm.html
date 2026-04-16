@@ -64,15 +64,18 @@
           <j-prompt p-x="center"></j-prompt>
           <script type="module">
             import jQC from './js/jq/jqc.min.js'
-            
-            await jQC.import('j-dialog', 'j-alert', 'j-confirm', 'j-prompt')
-            
+            await jQC.imports('dialog')
             const d = console.log
-            const [ $alert ] = await jQC.bind('j-alert').ready()
-            const [ $confirm ] = await jQC.bind('j-confirm').ready()
+            const [ $alert ] = jQC.bind('j-alert')
+            const [ $confirm ] = jQC.bind('j-confirm')
             $('.open-alert').click(function() { $alert.open('デフォルト'.repeat(10), 'アラート') })
-            $('.open-confirm').click(function() { $confirm.open('コンファーム') })
+            $('.open-confirm').click(async function() {
+            	d(await $confirm.open('コンファーム', '確認'))
+            	d('confim end')
+            })
             $('.open-prompt').click(function() { $confirm.open('プロンプト') })
+            d(await $confirm.open('コンファーム', '確認'))
+            d('end')
           </script>
           <style></style>
         </main>

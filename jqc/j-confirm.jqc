@@ -1,14 +1,18 @@
 pug
-	j-dialog(p-full=true p-btn.close=false p-height='{{ height }}' p-min-height='{{ minHeight }}')
+	j-dialog(p-full=true p-btn.close=false p-height='{{ height }}' p-min-height='{{ minHeight }}' @cb-close='cancel')
+		div(slot='header') {{ title }}
 		p.fc {{ msg }}
 		div(slot='footer')
-			button.secondary(@click='close') Cancel
-			button.primary(@click='close' autofocus) OK
+			button.secondary(@click='cancel') キャンセル
+			button.primary(@click='ok' autofocus) OK
 p
 	{
+		title: '',
 		msg: '',
-		height: 0,
-		minHeight: 16,
+		width: null,
+		minWidth: null,
+		height: null,
+		minHeight: 140,
 	}
 head
 	const d = console.log
@@ -17,11 +21,24 @@ init
 	const $dia = jQC.bind('j-dialog', this)
 	this.$dia = $dia
 methods
-	open(msg) {
+	async open(msg, title='') {
+		if (title) this.p.title = title
 		this.p.msg = msg
 		this.render()
+		this.$dia.close = this.cancel
 		this.$dia.open()
+		const { promise, resolve } = Promise.withResolvers()
+		this.resolve = resolve
+		return promise
+	},
+	cancel() {
+		d('call cancel')
+		this.resolve(false)
+		this.$dia.closeCore()
+		d('call cancel end')
+	},
+	ok() {
+		this.resolve(true)
+		this.$dia.close()
 	}
 scss
-	.card {
-	}

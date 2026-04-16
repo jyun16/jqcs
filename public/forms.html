@@ -63,7 +63,7 @@
             import $ from './js/jq/jq.min.js'
             import jQC from './js/jq/jqc.min.js'
             
-            await jQC.importWithPath('form', [ 'j-form' ])
+            await jQC.imports('form')
             
             globalThis.submit = function(formData) {
             	d('cb', formData)

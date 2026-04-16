@@ -88,15 +88,18 @@ open(anchor) {
 	}
 	$this.el(0).showModal()
 },
-close() {
-	const $this = this.$this
-	this.cb('close')
+closeCore() {
 	if (this.anchor) {
 		this.anchor.classList.remove('anchor')
 		this.anchor = null
 	}
 	$this.removeClass('anchored').removeClass('full')
 	$this.el(0).close()
+},
+close() {
+	const $this = this.$this
+	this.cb('close')
+	this.closeCore()
 },
 clickOutside(e) {
 	if (e.target.tagName === 'DIALOG') this.close()

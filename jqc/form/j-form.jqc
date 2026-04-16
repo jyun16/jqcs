@@ -30,7 +30,7 @@ p
 	{ name: 'form', conf: {}, initRender: true }
 head
 	const d = console.log
-async init
+init
 	this.render()
 	const binded = new Set()
 	const f = {}
@@ -38,7 +38,6 @@ async init
 	for (const n of Object.keys(this.p.conf)) {
 		const o = this.p.conf[n]
 		if (binded.has(o.type)) continue
-		await jQC.importWithPath('form', [ `j-${o.type}` ])
 		const $f = jQC.bind(`j-${o.type}`, this)
 		if (this.p.initRender) {
 			ret = jQC.queueRender($f)

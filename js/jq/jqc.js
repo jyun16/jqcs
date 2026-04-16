@@ -389,10 +389,24 @@ const jQC = (function() {
 jQC.EXT = 'jqc.min.js'
 jQC. PATH = '../jqc/'
 
+const IMPORTS = {
+	dialog: [ 'dialog', 'alert', 'confirm', 'prompt' ],
+	form: [ 'form', 'input', 'password', 'search', 'textarea', 'radio', 'checkbox', 'select', 'mselect', 'rich-select' ],
+}
+const IMPORTED = new Set()
+
 jQC.import = async function (...tags) {
 	for (const tag of tags) {
 		await import(`${jQC.PATH}${tag}.${jQC.EXT}`)
 	}
+}
+
+jQC.imports = async function (name) {
+	if (IMPORTED.has(name)) return
+	IMPORTED.add(name)
+	const f = IMPORTS[name].map(x => 'j-' + x)
+	if (name == 'form') return jQC.importWithPath('form', f)
+	return jQC.import(...f)
 }
 
 jQC.importWithPath = async function (path, tags, min = true) {
