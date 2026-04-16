@@ -56,21 +56,24 @@
           </div>
         </dialog>
         <main>
-          <button class="primary open-confirm"><span class="icon">launch</span><span>OPEN</span></button>
+          <button class="primary open-alert"><span class="icon">launch</span><span>ALERT</span></button>
+          <button class="primary open-confirm"><span class="icon">launch</span><span>CONFIRM</span></button>
+          <button class="primary open-prompt"><span class="icon">launch</span><span>PROMPT</span></button>
+          <j-alert p-x="center"></j-alert>
           <j-confirm p-x="center"></j-confirm>
+          <j-prompt p-x="center"></j-prompt>
           <script type="module">
             import jQC from './js/jq/jqc.min.js'
             
-            await jQC.import('j-dialog')
-            await jQC.import('j-confirm')
+            await jQC.import('j-dialog', 'j-alert', 'j-confirm', 'j-prompt')
             
             const d = console.log
+            const [ $alert ] = await jQC.bind('j-alert').ready()
             const [ $confirm ] = await jQC.bind('j-confirm').ready()
-            $confirm.p.msg = 'hoge'
-            $confirm.open('デフォルトメッセージ')
-            $('.open-confirm').click(function() {
-            	$confirm.open('良いですか？そうですか')
-            })
+            $alert.open('デフォルトメッセージ')
+            $('.open-alert').click(function() { $confirm.open('アラート') })
+            $('.open-confirm').click(function() { $confirm.open('コンファーム') })
+            $('.open-prompt').click(function() { $confirm.open('プロンプト') })
           </script>
           <style></style>
         </main>

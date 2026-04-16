@@ -1,6 +1,6 @@
 import jQC from '../../src/jqc.js'
 const d = console.log
-jQC.define('j-confirm', {
+jQC.define('j-prompt', {
   html: `<j-dialog p-full="true" p-btn.close="false" p-height='{{ height }}' p-min-height='{{ minHeight }}'>
 	<p class="fc">{{ msg }}</p>
 	<div slot='footer'>
@@ -12,13 +12,15 @@ jQC.define('j-confirm', {
   css: "",
   globalCss: "",
   p: {
-	msg: '',
+	msg: 'HOGE',
 	height: 0,
 	minHeight: 16,
 },
   init() {
 this.render()
 const $dia = jQC.bind('j-dialog', this)
+d(this.p)
+$dia.open()
 this.$dia = $dia
   },
   methods: {

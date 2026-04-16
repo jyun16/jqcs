@@ -1,11 +1,10 @@
 import jQC from '../../src/jqc.js'
 const d = console.log
-jQC.define('j-confirm', {
+jQC.define('j-alert', {
   html: `<j-dialog p-full="true" p-btn.close="false" p-height='{{ height }}' p-min-height='{{ minHeight }}'>
 	<p class="fc">{{ msg }}</p>
 	<div slot='footer'>
-		<button class="secondary" @click='close'>Cancel</button>
-		<button class="primary" @click='close' autofocus="autofocus">OK</button>
+		<button class="primary" @click='close' autofocus="autofocus">CLOSE</button>
 	</div>
 </j-dialog>`,
   
@@ -13,8 +12,8 @@ jQC.define('j-confirm', {
   globalCss: "",
   p: {
 	msg: '',
-	height: 0,
-	minHeight: 16,
+	height: null,
+	minHeight: null,
 },
   init() {
 this.render()

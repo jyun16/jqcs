@@ -27,8 +27,8 @@ jQC.define('j-dialog', {
 	full: false,
 	x: 'left',
 	y: 'bottom',
-	height: 40,
-	minHeight: 20,
+	height: 400,
+	minHeight: 200,
 	btn: {
 		close: true
 	},
@@ -41,8 +41,12 @@ const xMap = { left: 'span-right', right: 'span-left', center: '' }
 const el = $this.el(0)
 const x = xMap[p.x]
 el.style.setProperty('--area', `${p.y} ${x}`)
-if (p.height) $this.find('.card').css('height', p.height + 'vh')
-if (p.minHeight) $this.find('.card').css('minHeight', p.minHeight + 'vh')
+
+d(p)
+
+if (p.height) $this.find('.card').css('height', p.height + 'px')
+if (p.minHeight) $this.find('.card').css('minHeight', p.minHeight + 'px')
+
 this.$this = $this
   },
   methods: {

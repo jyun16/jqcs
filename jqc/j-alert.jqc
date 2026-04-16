@@ -2,13 +2,12 @@ pug
 	j-dialog(p-full=true p-btn.close=false p-height='{{ height }}' p-min-height='{{ minHeight }}')
 		p.fc {{ msg }}
 		div(slot='footer')
-			button.secondary(@click='close') Cancel
-			button.primary(@click='close' autofocus) OK
+			button.primary(@click='close' autofocus) CLOSE
 p
 	{
 		msg: '',
-		height: 0,
-		minHeight: 16,
+		height: null,
+		minHeight: null,
 	}
 head
 	const d = console.log

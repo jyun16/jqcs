@@ -2,22 +2,29 @@ extends ./_layout/main.pug
 block vars
 	- const title = 'DIALOG'
 block contents
+	button.primary.open-alert
+		span.icon launch
+		span ALERT
 	button.primary.open-confirm
 		span.icon launch
-		span OPEN
+		span CONFIRM
+	button.primary.open-prompt
+		span.icon launch
+		span PROMPT
+	j-alert(p-x='center')
 	j-confirm(p-x='center')
+	j-prompt(p-x='center')
 	script(type='module').
 		import jQC from './js/jq/jqc.min.js'
 
-		await jQC.import('j-dialog')
-		await jQC.import('j-confirm')
+		await jQC.import('j-dialog', 'j-alert', 'j-confirm', 'j-prompt')
 
 		const d = console.log
+		const [ $alert ] = await jQC.bind('j-alert').ready()
 		const [ $confirm ] = await jQC.bind('j-confirm').ready()
-		$confirm.p.msg = 'hoge'
-		$confirm.open('デフォルトメッセージ')
-		$('.open-confirm').click(function() {
-			$confirm.open('良いですか？そうですか')
-		})
+		$alert.open('デフォルトメッセージ')
+		$('.open-alert').click(function() { $confirm.open('アラート') })
+		$('.open-confirm').click(function() { $confirm.open('コンファーム') })
+		$('.open-prompt').click(function() { $confirm.open('プロンプト') })
 	style
 		:scss
