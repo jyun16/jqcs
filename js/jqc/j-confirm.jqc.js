@@ -1,7 +1,7 @@
 import jQC from '../../src/jqc.js'
 const d = console.log
 jQC.define('j-confirm', {
-  html: `<j-dialog p-full="true" p-btn.close="false" p-height='{{ height }}' p-min-height='{{ minHeight }}' @cb-close='cancel'>
+  html: `<j-dialog p-full="true" p-btn.close="false" p-height='{{ height }}' p-min-height='{{ minHeight }}' @cb-close='closeCb'>
 	<div slot='header'>{{ title }}</div>
 	<p class="fc">{{ msg }}</p>
 	<div slot='footer'>
@@ -30,20 +30,24 @@ async open(msg, title='') {
 	if (title) this.p.title = title
 	this.p.msg = msg
 	this.render()
-	this.$dia.close = this.cancel
 	this.$dia.open()
 	const { promise, resolve } = Promise.withResolvers()
 	this.resolve = resolve
 	return promise
 },
+closeCb() {
+	d('close cb', this.unko)
+	if (this.resolve) this.resolve(false)
+	this.resolve = null
+},
 cancel() {
 	d('call cancel')
-	this.resolve(false)
-	this.$dia.closeCore()
-	d('call cancel end')
+	this.closeCb()
+	this.$dia.close()
 },
 ok() {
-	this.resolve(true)
+	if (this.resolve) this.resolve(true)
+	this.resolve = null
 	this.$dia.close()
 }
   }

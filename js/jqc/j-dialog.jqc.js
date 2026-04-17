@@ -59,7 +59,6 @@ open(anchor) {
 		return
 	}
 	WH.map(v => p[v] && this.card.style.setProperty(`--${v}`, p[v]))
-	
 	if (anchor) {
 		this.anchor = anchor
 		anchor.classList.add('anchor')
@@ -88,9 +87,9 @@ open(anchor) {
 	}
 	$this.el(0).showModal()
 },
-close() {
+async close() {
 	const $this = this.$this
-	this.cb('close')
+	await this.cb('close')
 	if (this.anchor) {
 		this.anchor.classList.remove('anchor')
 		this.anchor = null
