@@ -1,5 +1,6 @@
 import jQC from '../../src/jqc.js'
 const d = console.log
+const WH = [ 'min-width', 'width', 'max-width', 'min-height', 'height', 'max-height' ]
 jQC.define('j-dialog', {
   html: `<dialog @cancel='close' @mousedown='clickOutside(e)' {{ !attrs }} autofocus>
 	<div class="card">
@@ -29,8 +30,8 @@ jQC.define('j-dialog', {
 	y: 'bottom',
 	width: 0,
 	height: 0,
-	minWidth: 400,
-	minHeight: 200,
+	minWidth: 0,
+	minHeight: 0,
 	btn: {
 		close: true
 	},
@@ -43,15 +44,13 @@ const xMap = { left: 'span-right', right: 'span-left', center: '' }
 const el = $this.el(0)
 const x = xMap[p.x]
 el.style.setProperty('--area', `${p.y} ${x}`)
-if (p.width) $this.find('.card').css('width', p.width + 'px')
-if (p.minWidth) $this.find('.card').css('minWidth', p.minWidth + 'px')
-if (p.height) $this.find('.card').css('height', p.height + 'px')
-if (p.minHeight) $this.find('.card').css('minHeight', p.minHeight + 'px')
 this.$this = $this
+this.card = $this.find('.card').el(0)
   },
   methods: {
 open(anchor) {
 	const $this = this.$this
+	const p = this.p
 	const el = $this.el(0)
 	if (this.p.full) {
 		$this.removeClass('anchored').addClass('full')
@@ -59,11 +58,12 @@ open(anchor) {
 		el.showModal()
 		return
 	}
+	WH.map(v => p[v] && this.card.style.setProperty(`--${v}`, p[v]))
+	
 	if (anchor) {
 		this.anchor = anchor
 		anchor.classList.add('anchor')
 		$this.addClass('anchored').removeClass('full')
-		const p = this.p
 		let y = p.y
 		let x = p.x
 		const xMap = { left: 'span-right', right: 'span-left', center: '' }
@@ -88,18 +88,15 @@ open(anchor) {
 	}
 	$this.el(0).showModal()
 },
-closeCore() {
+close() {
+	const $this = this.$this
+	this.cb('close')
 	if (this.anchor) {
 		this.anchor.classList.remove('anchor')
 		this.anchor = null
 	}
 	$this.removeClass('anchored').removeClass('full')
 	$this.el(0).close()
-},
-close() {
-	const $this = this.$this
-	this.cb('close')
-	this.closeCore()
 },
 clickOutside(e) {
 	if (e.target.tagName === 'DIALOG') this.close()

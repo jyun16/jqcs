@@ -287,12 +287,19 @@ button,input[type='button'],input[type='submit'] {
 		display: contents;
 	}
 	[slot="header"], [slot="footer"] {
-    display: inline;
-  }
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		height: var(--hf-height);
+		> span:not(.icon) {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
 	position: relative;
-	height: 2.5rem;
-	padding: 0 2rem;
 	text-align: center;
+	padding: 0 2rem;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -321,10 +328,24 @@ button,input[type='button'],input[type='submit'] {
 	}
 }
 
+dialog {
+	overflow: hidden;
+}
+
 .card {
+	--hf-height: 32px;
+	--min-width: auto;
+	--width: auto;
+	--max-width: auto;
+	--min-height: auto;
+	--height: auto;
+	--max-height: 50vh;
 	display: grid;
 	grid-template-rows: auto 1fr auto;
-	min-height: 0;
+	min-width: var(--min-width);
+	width: var(--width);
+	max-width: var(--max-width);
+	overflow: hidden;
 	border: 1px solid v.$color;
 	border-radius: .5rem;
 	background: v.$bgColor;
@@ -332,7 +353,9 @@ button,input[type='button'],input[type='submit'] {
 	.body {
 		@include scrollbar;
 		margin: auto;
-		max-height: 50vh;
+		min-height: calc(var(--min-height) - var(--hf-height) * 2);
+		height: calc(var(--height) - var(--hf-height) * 2);
+		max-height: calc(var(--max-height) - var(--hf-height) * 2);
 		padding-left: .5rem;
 		overflow-y: scroll;
 		word-break: break-all;
