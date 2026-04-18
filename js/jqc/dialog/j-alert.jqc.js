@@ -1,30 +1,32 @@
-import jQC from '../../src/jqc.js'
+import jQC from '../../../src/jqc.js'
 const d = console.log
-jQC.define('j-prompt', {
+jQC.define('j-alert', {
   html: `<j-dialog p-full="true" p-btn.close="false" p-height='{{ height }}' p-min-height='{{ minHeight }}'>
+	<div slot='header'>{{ title }}</div>
 	<p class="fc">{{ msg }}</p>
 	<div slot='footer'>
-		<button class="secondary" @click='close'>Cancel</button>
-		<button class="primary" @click='close' autofocus="autofocus">OK</button>
+		<button class="primary" @click='close' autofocus="autofocus">CLOSE</button>
 	</div>
 </j-dialog>`,
   
   css: "",
   globalCss: "",
   p: {
-	msg: 'HOGE',
-	height: 0,
-	minHeight: 16,
+	title: '',
+	msg: '',
+	width: null,
+	minWidth: null,
+	height: null,
+	minHeight: 140,
 },
   init() {
 this.render()
 const $dia = jQC.bind('j-dialog', this)
-d(this.p)
-$dia.open()
 this.$dia = $dia
   },
   methods: {
-open(msg) {
+open(msg, title='') {
+	if (title) this.p.title = title
 	this.p.msg = msg
 	this.render()
 	this.$dia.open()

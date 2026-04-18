@@ -405,8 +405,7 @@ jQC.imports = async function (name) {
 	if (IMPORTED.has(name)) return
 	IMPORTED.add(name)
 	const f = IMPORTS[name].map(x => 'j-' + x)
-	if (name == 'form') return jQC.importWithPath('form', f)
-	return jQC.import(...f)
+	return jQC.importWithPath(name, f)
 }
 
 jQC.importWithPath = async function (path, tags, min = true) {

@@ -20,7 +20,7 @@ import * as _sass from 'sass'
 const sass = gulpSass(_sass)
 import cleanCSS from 'gulp-clean-css'
 
-const cl = console.log
+const d = console.log
 const browserSync = _browserSync.create()
 
 const bs = () => {
@@ -51,7 +51,7 @@ const make = process.platform === 'freebsd' ? 'gmake' : 'make'
 const js_dir = [ 'js/**/*.js', '!js/**/*.min.js' ]
 const jsw = () => { watch(js_dir, series(jsc, bsr)) }
 const jsc = (cb) => {
-	cl(execSync(`${make} js`).toString())
+	d(execSync(`${make} js`).toString())
 	cb()
 }
 
@@ -108,7 +108,7 @@ function pug_include_w(cb) { watch(pug_include_dir, series(pugc, bsr)); cb() }
 
 const jqcw = () => { watch('jqc/**/*.jqc', series(jqcc, bsr)) }
 const jqcc = cb => {
-	cl(execSync(`${make} jqc`).toString())
+	d(execSync(`${make} jqc`).toString())
 	cb()
 }
 
@@ -148,16 +148,16 @@ const checkIgnore = (regs, str) => {
 	return false
 }
 
-const exec = cmd => cl(cmd, execSync(cmd).toString())
+const exec = cmd => d(cmd, execSync(cmd).toString())
 
-const rmTrash = (dir, ext, toDir) => {
-	const files = ls(dir).map(f => path.basename(f).split('.')[0])
-	for (let f of ls(toDir)) {
-		const ff = path.basename(f).split('.')[0]
-		if (!files.includes(ff)) {
+const rmTrash = (src, dest, map) => {
+	const files = ls(src).map(f => f.replace(`${src}/`, '').replace(map.src, ''))
+	ls(dest).forEach(f => {
+		const p = f.replace(`${dest}/`, '').replace(map.dst, '')
+		if (!files.includes(p)) {
 			exec(`rm ${f}`)
 		}
-	}
+	})
 }
 
 const cu = {
@@ -175,16 +175,16 @@ const cu = {
 		cb()
 	},
 	js: cb => {
-		rmTrash('js', '.js', `${CONF.static}js`)
+		rmTrash('js', `${CONF.static}js`, { src: '.js', dst: '.min.js' })
 		cb()
 	},
 	css: cb => {
-		rmTrash('scss', '.scss', `${CONF.static}css`)
+		rmTrash('scss', `${CONF.static}css`, { src: '.scss', dst: '.min.css' })
 		cb()
 	},
 	jqc: cb => {
-		rmTrash('jqc', '.jqc', `js/jqc`)
-		rmTrash('jqc', '.jqc', `${CONF.static}js/jqc`)
+		rmTrash('jqc', 'js/jqc', { src: '.jqc', dst: '.jqc.js' })
+		rmTrash('jqc', `${CONF.static}js/jqc`, { src: '.jqc', dst: '.jqc.min.js' })
 		cb()
 	},
 	empty: cb => {

@@ -1,4 +1,4 @@
-import jQC from '../../src/jqc.js'
+import jQC from '../../../src/jqc.js'
 const d = console.log
 const WH = [ 'min-width', 'width', 'max-width', 'min-height', 'height', 'max-height' ]
 jQC.define('j-dialog', {

@@ -1,4 +1,4 @@
-import jQC from '../../src/jqc.js'
+import jQC from '../../../src/jqc.js'
 const d = console.log
 jQC.define('j-confirm', {
   html: `<j-dialog p-full="true" p-btn.close="false" p-height='{{ height }}' p-min-height='{{ minHeight }}' @cb-close='closeCb'>
