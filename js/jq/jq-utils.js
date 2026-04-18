@@ -1,9 +1,9 @@
 const d = console.log
 
 export function df(f) {
-  const div = document.createElement('div')
-  div.appendChild(f.cloneNode(true))
-  d(div.innerHTML)
+	const div = document.createElement('div')
+	div.appendChild(f.cloneNode(true))
+	d(div.innerHTML)
 }
 
 export function ddom(...args) {
@@ -15,11 +15,11 @@ export function isDOM(x) {
 }
 
 export function child2frag(el) {
-  const f = document.createDocumentFragment()
-  while (el.firstChild) {
-    f.append(el.firstChild)
-  }
-  return f
+	const f = document.createDocumentFragment()
+	while (el.firstChild) {
+		f.append(el.firstChild)
+	}
+	return f
 }
 
 export function dom2html(dom) {
@@ -38,64 +38,74 @@ export function frag2html(frag) {
 }
 
 export function isEmpty(v) {
-  return !v || (typeof v === 'object' && Object.keys(v).length === 0)
+	return !v || (typeof v === 'object' && Object.keys(v).length === 0)
 }
 
 export function isEqual(a, b) {
-  if (a === b) return true
-  if (a == null || b == null) return false
-  if (typeof a !== 'object' || typeof b !== 'object') return false
-  if (Array.isArray(a)) {
-    if (!Array.isArray(b) || a.length !== b.length) return false
-    for (let i = 0, len = a.length; i < len; i++) {
-      if (!isEqual(a[i], b[i])) return false
-    }
-    return true
-  }
-  const keys = Object.keys(a)
-  if (keys.length !== Object.keys(b).length) return false
-  for (let i = 0, len = keys.length; i < len; i++) {
-    const k = keys[i]
-    if (!Object.prototype.hasOwnProperty.call(b, k) || !isEqual(a[k], b[k])) return false
-  }
-  return true
+	if (a === b) return true
+	if (a == null || b == null) return false
+	if (typeof a !== 'object' || typeof b !== 'object') return false
+	if (Array.isArray(a)) {
+		if (!Array.isArray(b) || a.length !== b.length) return false
+		for (let i = 0, len = a.length; i < len; i++) {
+			if (!isEqual(a[i], b[i])) return false
+		}
+		return true
+	}
+	const keys = Object.keys(a)
+	if (keys.length !== Object.keys(b).length) return false
+	for (let i = 0, len = keys.length; i < len; i++) {
+		const k = keys[i]
+		if (!Object.prototype.hasOwnProperty.call(b, k) || !isEqual(a[k], b[k])) return false
+	}
+	return true
 }
 
-export function toCamel(s) { return s.replace(/-([a-z])/g, (_, c) => c.toUpperCase()) }
+export const toCamel = (v) => {
+	return v.replace(/[-_ ]+(.)/g, (m, c) => c.toUpperCase()).replace(/^(.)/, (m, c) => c.toLowerCase())
+}
+
+export const toSnake = (v) => {
+	return v.replace(/[A-Z]/g, (m) => `_${m.toLowerCase()}`).replace(/[- ]+/g, '_').replace(/^_+|_+$/g, '')
+}
+
+export const toKebab = (v) => {
+	return v.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`).replace(/[_ ]+/g, '-').replace(/^-+|-+$/g, '')
+}
 
 export function getObjVal(obj, path) {
-  let cur = obj
-  let start = 0
-  let end = path.indexOf('.')
-  while (end !== -1) {
-    if (cur == null) return undefined
-    cur = cur[path.substring(start, end)]
-    start = end + 1
-    end = path.indexOf('.', start)
-  }
-  if (cur == null) return undefined
-  return cur[path.substring(start)]
+	let cur = obj
+	let start = 0
+	let end = path.indexOf('.')
+	while (end !== -1) {
+		if (cur == null) return undefined
+		cur = cur[path.substring(start, end)]
+		start = end + 1
+		end = path.indexOf('.', start)
+	}
+	if (cur == null) return undefined
+	return cur[path.substring(start)]
 }
 
 export function diffObj(keys, obj, old) {
-  const created = {}
-  const changed = {}
-  const removed = {}
-  for (let i = 0, len = keys.length; i < len; i++) {
-    const path = keys[i]
-    const val = getObjVal(obj, path)
-    const prev = getObjVal(old, path)
-    if (val !== undefined && prev === undefined) {
-      created[path] = val
-    }
-    else if (val === undefined && prev !== undefined) {
-      removed[path] = prev
-    }
-    else if (!isEqual(val, prev)) {
-      changed[path] = val
-    }
-  }
-  return { created, changed, removed }
+	const created = {}
+	const changed = {}
+	const removed = {}
+	for (let i = 0, len = keys.length; i < len; i++) {
+		const path = keys[i]
+		const val = getObjVal(obj, path)
+		const prev = getObjVal(old, path)
+		if (val !== undefined && prev === undefined) {
+			created[path] = val
+		}
+		else if (val === undefined && prev !== undefined) {
+			removed[path] = prev
+		}
+		else if (!isEqual(val, prev)) {
+			changed[path] = val
+		}
+	}
+	return { created, changed, removed }
 }
 
 export function deepClone(obj) {
@@ -107,21 +117,21 @@ export function deepClone(obj) {
 }
 
 export function setMapVal(obj, key, value) {
-  const path = key.split('.')
-  let cur = obj
-  for (let i = 0; i < path.length; i++) {
-    const k = path[i]
-    if (i === path.length - 1) {
-      cur[k] = value
-    }
-    else {
-      if (!(k in cur) || typeof cur[k] !== 'object') {
-        cur[k] = /^\d+$/.test(path[i + 1]) ? [] : {}
-      }
-      cur = cur[k]
-    }
-  }
-  return obj
+	const path = key.split('.')
+	let cur = obj
+	for (let i = 0; i < path.length; i++) {
+		const k = path[i]
+		if (i === path.length - 1) {
+			cur[k] = value
+		}
+		else {
+			if (!(k in cur) || typeof cur[k] !== 'object') {
+				cur[k] = /^\d+$/.test(path[i + 1]) ? [] : {}
+			}
+			cur = cur[k]
+		}
+	}
+	return obj
 }
 
 export const filters = {

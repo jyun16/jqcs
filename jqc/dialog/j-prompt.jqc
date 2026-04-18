@@ -1,29 +1,51 @@
 pug
-	j-dialog(p-full=true p-btn.close=false p-height='{{ height }}' p-min-height='{{ minHeight }}')
-		p.fc {{ msg }}
+	j-dialog(p-full=true p-btn.close=false p-height='{{ height }}' p-min-height='{{ minHeight }}' @cb-close='closeCb')
+		div(slot='header') {{ title }}
+		j-input(name='return' p-val='{{ val }}' @typed='input(e)' @keydown='send(e)' autofocus)
 		div(slot='footer')
-			button.secondary(@click='close') Cancel
-			button.primary(@click='close' autofocus) OK
+			button.secondary(@click='cancel') {{ label.cancel }}
+			button.primary(@click='ok') {{ label.ok }}
 p
 	{
-		msg: 'HOGE',
-		height: 0,
-		minHeight: 16,
+		title: '', val: '',
+		label: { cancel: 'キャンセル', ok: '決定' },
+		width: 0, minWidth: 0, maxWidth: 0,
+		height: 0, minHeight: 0, maxHeight: 0,
 	}
 head
 	const d = console.log
 init
 	this.render()
 	const $dia = jQC.bind('j-dialog', this)
-	d(this.p)
-	$dia.open()
+	const $inp = jQC.bind('j-input', this)
+	$inp.render()
 	this.$dia = $dia
+	this.$inp = $inp
 methods
-	open(msg) {
-		this.p.msg = msg
+	async open(title='') {
+		if (title) this.p.title = title
 		this.render()
 		this.$dia.open()
+		const { promise, resolve } = Promise.withResolvers()
+		this._resolve = resolve
+		return promise
+	},
+	send(e) {
+		if (e.key == 'Enter') this.ok()
+	},
+	resolve(v) {
+		if (this._resolve) this._resolve(v)
+		this._resolve = null
+	},
+	closeCb() {
+		this.resolve(null)
+	},
+	cancel() {
+		this.closeCb()
+		this.$dia.close()
+	},
+	ok() {
+		this.resolve(this.$inp.p.val)
+		this.$dia.close()
 	}
 scss
-	.card {
-	}

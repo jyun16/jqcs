@@ -5,19 +5,17 @@ jQC.define('j-alert', {
 	<div slot='header'>{{ title }}</div>
 	<p class="fc">{{ msg }}</p>
 	<div slot='footer'>
-		<button class="primary" @click='close' autofocus="autofocus">CLOSE</button>
+		<button class="primary" @click='close' autofocus="autofocus">{{ label.close }}</button>
 	</div>
 </j-dialog>`,
   
   css: "",
   globalCss: "",
   p: {
-	title: '',
-	msg: '',
-	width: null,
-	minWidth: null,
-	height: null,
-	minHeight: 140,
+	title: '', msg: '',
+	label: { close: '閉じる' },
+	width: 0, minWidth: 0, maxWidth: 0,
+	height: 0, minHeight: 0, maxHeight: 0,
 },
   init() {
 this.render()

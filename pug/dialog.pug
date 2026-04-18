@@ -9,7 +9,7 @@ block contents
 					button.fm.primary.open-dialog
 						span.icon launch
 						span OPEN
-	j-dialog.vw30(p-x='center' p-y='top' p-height='200px' p-btn.close='true' @cb-close='cbClose')
+	j-dialog.vw30(p-x='center' p-y='top' p-max-height='300px' p-btn.close='true' @cb-close='cbClose')
 		div(slot='header')
 			span.icon person
 			span= 'INFO'.repeat(10)

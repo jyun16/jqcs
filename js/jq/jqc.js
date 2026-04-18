@@ -341,7 +341,7 @@ const jQC = (function() {
 							clearTimeout(timer)
 							timer = setTimeout(() => {
 								callMethod($el, method, argsStr, e)
-							}, 300)
+							}, 50)
 						})
 						continue
 					}
@@ -391,6 +391,7 @@ jQC. PATH = '../jqc/'
 
 const IMPORTS = {
 	dialog: [ 'dialog', 'alert', 'confirm', 'prompt' ],
+	dialogAttach: [ 'form/j-input' ],
 	form: [ 'form', 'input', 'password', 'search', 'textarea', 'radio', 'checkbox', 'select', 'mselect', 'rich-select' ],
 }
 const IMPORTED = new Set()
@@ -405,6 +406,7 @@ jQC.imports = async function (name) {
 	if (IMPORTED.has(name)) return
 	IMPORTED.add(name)
 	const f = IMPORTS[name].map(x => 'j-' + x)
+	if (`${name}Attach` in IMPORTS) jQC.import(IMPORTS[`${name}Attach`])
 	return jQC.importWithPath(name, f)
 }
 

@@ -14,20 +14,16 @@ pug
 				{% end %}
 p
 	{
+		x: 'left', y: 'bottom',
+		width: 0, minWidth: 0, maxWidth: 0,
+		height: 0, minHeight: 0, maxHeight: 0,
 		full: false,
-		x: 'left',
-		y: 'bottom',
-		width: 0,
-		height: 0,
-		minWidth: 0,
-		minHeight: 0,
-		btn: {
-			close: true
-		},
+		btn: { close: true },
 	}
 head
+	import { toKebab } from '../../jq/jq-utils.js'
 	const d = console.log
-	const WH = [ 'min-width', 'width', 'max-width', 'min-height', 'height', 'max-height' ]
+	const WH = [ 'minWidth', 'width', 'maxWidth', 'minHeight', 'height', 'maxHeight' ]
 init
 	this.render()
 	const $this = this.find('dialog')
@@ -43,13 +39,13 @@ methods
 		const $this = this.$this
 		const p = this.p
 		const el = $this.el(0)
+		WH.map(v => p[v] && this.card.style.setProperty(`--${toKebab(v)}`, p[v]))
 		if (this.p.full) {
 			$this.removeClass('anchored').addClass('full')
 			el.style.removeProperty('--area')
 			el.showModal()
 			return
 		}
-		WH.map(v => p[v] && this.card.style.setProperty(`--${v}`, p[v]))
 		if (anchor) {
 			this.anchor = anchor
 			anchor.classList.add('anchor')

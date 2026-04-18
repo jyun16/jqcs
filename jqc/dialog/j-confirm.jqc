@@ -3,16 +3,14 @@ pug
 		div(slot='header') {{ title }}
 		p.fc {{ msg }}
 		div(slot='footer')
-			button.secondary(@click='cancel') キャンセル
-			button.primary(@click='ok' autofocus) OK
+			button.secondary(@click='cancel') {{ label.cancel }}
+			button.primary(@click='ok') {{ label.ok }}
 p
 	{
-		title: '',
-		msg: '',
-		width: null,
-		minWidth: null,
-		height: null,
-		minHeight: 140,
+		title: '', msg: '',
+		label: { cancel: 'キャンセル', ok: '決定' },
+		width: 0, minWidth: 0, maxWidth: 0,
+		height: 0, minHeight: 0, maxHeight: 0,
 	}
 head
 	const d = console.log

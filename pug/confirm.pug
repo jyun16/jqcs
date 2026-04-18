@@ -20,12 +20,14 @@ block contents
 		const d = console.log
 		const [ $alert ] = jQC.bind('j-alert')
 		const [ $confirm ] = jQC.bind('j-confirm')
-		$('.open-alert').click(function() { $alert.open('デフォルト'.repeat(10), 'アラート') })
+		const [ $prompt ] = jQC.bind('j-prompt')
+		$('.open-alert').click(function() { $alert.open('アラート'.repeat(10), 'ALERT') })
 		$('.open-confirm').click(async function() {
-			d(await $confirm.open('コンファーム', '確認'))
+			d(await $confirm.open('コンファーム', 'CONFIRM'))
 			d('confim end')
 		})
-		$('.open-prompt').click(function() { $confirm.open('プロンプト') })
-		d(await $confirm.open('コンファーム', '確認'))
+		$('.open-prompt').click(async function() {
+			d(await $prompt.open('PROMPT'))
+		})
 	style
 		:scss

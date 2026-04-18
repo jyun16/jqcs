@@ -3,15 +3,13 @@ pug
 		div(slot='header') {{ title }}
 		p.fc {{ msg }}
 		div(slot='footer')
-			button.primary(@click='close' autofocus) CLOSE
+			button.primary(@click='close' autofocus) {{ label.close }}
 p
 	{
-		title: '',
-		msg: '',
-		width: null,
-		minWidth: null,
-		height: null,
-		minHeight: 140,
+		title: '', msg: '',
+		label: { close: '閉じる' },
+		width: 0, minWidth: 0, maxWidth: 0,
+		height: 0, minHeight: 0, maxHeight: 0,
 	}
 head
 	const d = console.log

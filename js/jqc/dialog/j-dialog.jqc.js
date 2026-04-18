@@ -1,6 +1,7 @@
 import jQC from '../../../src/jqc.js'
+import { toKebab } from '../../jq/jq-utils.js'
 const d = console.log
-const WH = [ 'min-width', 'width', 'max-width', 'min-height', 'height', 'max-height' ]
+const WH = [ 'minWidth', 'width', 'maxWidth', 'minHeight', 'height', 'maxHeight' ]
 jQC.define('j-dialog', {
   html: `<dialog @cancel='close' @mousedown='clickOutside(e)' {{ !attrs }} autofocus>
 	<div class="card">
@@ -25,16 +26,11 @@ jQC.define('j-dialog', {
   css: "dialog {\n  position: fixed;\n  max-width: 90vw;\n  max-height: 80vh;\n  margin: 10px 0 !important;\n}\ndialog .body:focus {\n  outline: none;\n}\ndialog::backdrop {\n  background: rgba(0, 0, 0, 0.6);\n}\ndialog.full {\n  margin: auto !important;\n}\ndialog.anchored {\n  position-anchor: --anchor;\n  position-area: var(--area);\n}",
   globalCss: ".anchor {\n  anchor-name: --anchor;\n}",
   p: {
+	x: 'left', y: 'bottom',
+	width: 0, minWidth: 0, maxWidth: 0,
+	height: 0, minHeight: 0, maxHeight: 0,
 	full: false,
-	x: 'left',
-	y: 'bottom',
-	width: 0,
-	height: 0,
-	minWidth: 0,
-	minHeight: 0,
-	btn: {
-		close: true
-	},
+	btn: { close: true },
 },
   init() {
 this.render()
@@ -52,13 +48,13 @@ open(anchor) {
 	const $this = this.$this
 	const p = this.p
 	const el = $this.el(0)
+	WH.map(v => p[v] && this.card.style.setProperty(`--${toKebab(v)}`, p[v]))
 	if (this.p.full) {
 		$this.removeClass('anchored').addClass('full')
 		el.style.removeProperty('--area')
 		el.showModal()
 		return
 	}
-	WH.map(v => p[v] && this.card.style.setProperty(`--${v}`, p[v]))
 	if (anchor) {
 		this.anchor = anchor
 		anchor.classList.add('anchor')

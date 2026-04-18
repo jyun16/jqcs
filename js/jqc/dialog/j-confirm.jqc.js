@@ -5,20 +5,18 @@ jQC.define('j-confirm', {
 	<div slot='header'>{{ title }}</div>
 	<p class="fc">{{ msg }}</p>
 	<div slot='footer'>
-		<button class="secondary" @click='cancel'>キャンセル</button>
-		<button class="primary" @click='ok' autofocus="autofocus">OK</button>
+		<button class="secondary" @click='cancel'>{{ label.cancel }}</button>
+		<button class="primary" @click='ok'>{{ label.ok }}</button>
 	</div>
 </j-dialog>`,
   
   css: "",
   globalCss: "",
   p: {
-	title: '',
-	msg: '',
-	width: null,
-	minWidth: null,
-	height: null,
-	minHeight: 140,
+	title: '', msg: '',
+	label: { cancel: 'キャンセル', ok: '決定' },
+	width: 0, minWidth: 0, maxWidth: 0,
+	height: 0, minHeight: 0, maxHeight: 0,
 },
   init() {
 this.render()
