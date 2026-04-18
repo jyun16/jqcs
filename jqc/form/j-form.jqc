@@ -100,19 +100,6 @@ scss
 			display: flex;
 			justify-content: center;
 		}
-		button.primary {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			min-width: 200px;
-			border: 0;
-			border-radius: 5px;
-			color: white;
-			background-color: #0066ff;
-			font-weight: bold;
-			padding: .7rem;
-			cursor: pointer;
-		}
 	}
 globalScss
 	@media (width < 600px) {

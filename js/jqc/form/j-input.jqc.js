@@ -3,7 +3,7 @@ import jQC from '../../../src/jqc.js'
 jQC.define('j-input', {
   html: `<input type='text' name='{{ name }}' value='{{ val }}' @typed='input(e)' '{{ !attrs }}'></input>`,
   
-  css: "input {\n  width: 100%;\n  padding: 10px;\n  border: 2px solid #ddd;\n  border-radius: 5px;\n}\ninput:focus {\n  border-color: #0099ff;\n  outline: none;\n}",
+  css: "input {\n  width: 100%;\n}",
   globalCss: "",
   p: { name: '', val: '' },
   

@@ -9,11 +9,4 @@ methods
 scss
 	input {
 		width: 100%;
-		padding: 10px;
-		border: 2px solid #ddd;
-		border-radius: 5px;
-		&:focus {
-			border-color: #0099ff;
-			outline: none;
-		}
 	}

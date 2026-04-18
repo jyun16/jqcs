@@ -9,15 +9,8 @@ methods
 scss
 	textarea {
 		width: 100%;
-		padding: 10px;
-		border: 2px solid #ddd;
-		border-radius: 5px;
-		&:focus {
-			border-color: #0099ff;
-			outline: none;
-		}
-		field-sizing: content;
-		line-height: 1.5;
 		min-height: 5lh;
 		max-height: 10lh;
+		field-sizing: content;
+		line-height: 1.5;
 	}

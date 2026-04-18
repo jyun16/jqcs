@@ -21,30 +21,11 @@ scss
 		gap: 0 1em;
 		border: none;
 		label {
+			position: relative;
 			display: flex;
 			align-items: center;
 			gap: 0 .5em;
-			position: relative;
 			cursor: pointer;
 			user-select: none;
-			&::before {
-				width: 14px;
-				height: 14px;
-				border-radius: 3px;
-				border: 2px solid #ddd;
-				content: '';
-			}
-			&:has(:checked)::after {
-				position: absolute;
-				top: 5px;
-				left: 6px;
-				transform: rotate(45deg);
-				width: 4px;
-				height: 9px;
-				border: solid #0099ff;
-				border-width: 0 3px 3px 0;
-				content: '';
-			}
 		}
-		input { display: none; }
 	}

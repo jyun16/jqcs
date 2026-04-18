@@ -4,7 +4,7 @@ jQC.define('j-search', {
   html: `<input type='text' name='{{ name }}' value='{{ val }}' @typed='input(e)' '{{ !attrs }}'></input>
 <button type='button' @click='search()'></button>`,
   
-  css: "this {\n  position: relative;\n}\nthis input {\n  width: 100%;\n  padding: 10px;\n  border: 2px solid #ddd;\n  border-radius: 5px;\n}\nthis input:focus {\n  border-color: #0099ff;\n  outline: none;\n}\nthis button {\n  position: absolute;\n  top: 0px;\n  right: 10px;\n  border: none;\n  background-color: transparent;\n  cursor: pointer;\n}\nthis button::after {\n  color: #999;\n  font-size: 24px;\n  font-family: \"Material Symbols Outlined\";\n  content: \"\\e8b6\";\n}",
+  css: "this {\n  position: relative;\n}\nthis input {\n  width: 100%;\n  padding-right: 40px;\n}\nthis button {\n  position: absolute;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  top: 0;\n  bottom: 0;\n  right: 5px;\n  height: 32px;\n  margin: auto;\n}\nthis button::after {\n  font-size: 24px;\n  font-family: \"Material Symbols Outlined\";\n  content: \"\\e8b6\";\n}",
   globalCss: "",
   p: { name: '', val: '' },
   
