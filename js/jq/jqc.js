@@ -276,6 +276,35 @@ const jQC = (function() {
 		}
 	}
 
+	function callMethodCB($self, func, $this, ...args) {
+		if (typeof $self[func] == 'function') {
+			return $self[func].apply($this, args)
+		}
+	}
+
+	function bindCB($el, el) {
+		const cb = {}
+		for (const attr of el.attributes) {
+			const name = attr.name
+			if (name.startsWith('@cb-') || name.startsWith('jqc-cb-')) {
+				const key = name.replace(/(@cb-|jqc-cb-)/, '')
+				cb[key] = attr.value
+				el.removeAttribute(attr.name)
+			}
+		}
+		$el.cb = function(k, ...args) {
+			let method = cb[k]
+			if (!method) return
+			method = method.replace(/(\(.*\))?$/, '')
+			try {
+				if ($el._caller && typeof $el._caller[method] == 'function') {
+					return callMethodCB($el._caller, method, $el._caller, ...args)
+				}
+				return callMethodCB(globalThis, method, $el, ...args)
+			} catch (e) {}
+		}
+	}
+
 	function bindEvents($el) {
 		const nodes = $el.find('*').el()
 		const compTags = Object.keys(defs).join(',')
@@ -323,35 +352,6 @@ const jQC = (function() {
 					}
 				}
 			}
-		}
-	}
-
-	function callMethodCB($self, func, $this, ...args) {
-		if (typeof $self[func] == 'function') {
-			return $self[func].apply($this, args)
-		}
-	}
-
-	function bindCB($el, el) {
-		const cb = {}
-		for (const attr of el.attributes) {
-			const name = attr.name
-			if (name.startsWith('@cb-') || name.startsWith('jqc-cb-')) {
-				const key = name.replace(/(@cb-|jqc-cb-)/, '')
-				cb[key] = attr.value
-				el.removeAttribute(attr.name)
-			}
-		}
-		$el.cb = function(k, ...args) {
-			let method = cb[k]
-			if (!method) return
-			method = method.replace(/(\(.*\))?$/, '')
-			try {
-				if ($el._caller && typeof $el._caller[method] == 'function') {
-					return callMethodCB($el._caller, method, $el, ...args)
-				}
-				return callMethodCB(globalThis, method, $el, ...args)
-			} catch (e) {}
 		}
 	}
 

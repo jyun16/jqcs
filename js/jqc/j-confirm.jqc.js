@@ -32,22 +32,22 @@ async open(msg, title='') {
 	this.render()
 	this.$dia.open()
 	const { promise, resolve } = Promise.withResolvers()
-	this.resolve = resolve
+	this._resolve = resolve
 	return promise
 },
+resolve(v) {
+	if (this._resolve) this._resolve(v)
+	this._resolve = null
+},
 closeCb() {
-	d('close cb', this.unko)
-	if (this.resolve) this.resolve(false)
-	this.resolve = null
+	this.resolve(false)
 },
 cancel() {
-	d('call cancel')
 	this.closeCb()
 	this.$dia.close()
 },
 ok() {
-	if (this.resolve) this.resolve(true)
-	this.resolve = null
+	this.resolve(true)
 	this.$dia.close()
 }
   }
