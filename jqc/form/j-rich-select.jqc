@@ -1,120 +1,92 @@
 pug
-	.tags(@click='toggleOpts()' '{{ !attrs }}')
-		{% for k in vals %}
-			.tag
-				.lbl {{ opts[k] }}
-				.rm.material-symbols-outlined(@click!="rmVal('{{ k }}')") close
+	.items(@click='open')
+		{% for v in val %}
+			.item
+				span {{ opts[v] }}
+				span.icon.close(@click='rmItem(e)' value='{{ v }}') close
 		{% end %}
-		modal
-			.opts
-				input(type='text' @typed='filter(e)' @stop value!='{{ filter }}')
-				ul
-					{% for k, v in opts %}
-						{% if (!vals.includes(k) && v.includes(filter)) %}
-							li(@click!="select('{{ k }}')") {{ v }}
-						{% end %}
-					{% end %}
+	j-dialog(p-btn.close=false p-fit=true @typed='search')
+		j-search
+		.options(@click='select(e)')
+			p {{ val }}
+			{% for v, l in opts %}
+				p {{ v }}: {{ !val.includes(v) }}
+				{% if !val.includes(v) %}
+					.option(value='{{v}}') {{l}}
+				{% end %}
+			{% end %}
 p
 	{
-		vals: [],
-		opts: {},
-		filter: '',
-		option_height: '',
+		name: '', val: [ 'hoge' ],
+		opts: {
+			hoge: 'HOGE',
+			fuga: 'FUGA',
+			foo: 'FOO',
+			bar: 'BAR',
+		},
 	}
 head
 	const d = console.log
-	await jQC.import('modal')
-	let $modal = null
-postRender
-	$modal = jQC.bind('modal')
 init
 	this.render()
+	const $dia = jQC.bind('j-dialog', this)
+	const $filter = jQC.bind('j-search', this)
+	$filter.render()
+	this.$dia = $dia
+	this.$filter = $filter
+	this.$dia.open(this)
 methods
-	toggleOpts() {
-		$modal.toggle()
+	open() {
+		this.$dia.open(this)
 	},
-	filter(e) {
-		this.p.filter = e.target.value
-		this.render()
-		const el = this.find('input').el(0)
-		el.focus()
-		const val = el.value
-		el.setSelectionRange(val.length, val.length)
+	rmItem(e) {
+		e.stopPropagation()
+		d('rm', e.target.getAttribute('value'))
 	},
-	select(k) {
-		if (!this.p.vals.includes(k)) {
-			this.p.vals.push(k)
-			this.p.filter = ''
-			this.render()
-		}
+	search(e) {
+		d(this.$filter.p.val)
 	},
-	rmVal(k) {
-		this.p.vals = this.p.vals.filter(v => v !== k)
-		this.render()
-	}
+	select(e) {
+		d('sel', e.target.getAttribute('value'))
+		this.$dia.close()
+	},
 scss
-	input {
-		width: 100%;
-		padding: 10px;
-		border: 2px solid #ddd;
-		border-radius: 5px;
-		&:focus {
-			border-color: #0099ff;
-			outline: none;
-		}
-	}
-	.tags {
+	.items {
 		display: flex;
-		position: relative;
-		flex-wrap: wrap;
 		align-items: center;
-		gap: 0.5em;
-		width: 100%;
-		height: 2.6rem;
+		gap: .3rem;
+		height: 2.5rem;
 		padding: 0 .5rem;
-		background-color: white;
-		border: 2px solid #ddd;
+		background: #fff;
 		border-radius: 5px;
-		cursor: pointer;
-		margin-bottom: .5rem;
-		.tag {
+		user-select: none;
+		.item {
 			display: flex;
 			align-items: center;
-			background: #666;
-			padding: 0 .5rem;
-			border-radius: 4px;
-			user-select: none;
-			height: 2rem;
+			height: 1.8rem;
+			padding: .1rem .3rem .2rem .4rem;
+			color: #fff;
+			background: #5e6264;
+			border-radius: .2rem;
 			cursor: default;
-			.lbl {
-				transform: translateY(-1px);
-			}
-			.rm {
-				transform: translateX(4px);
-				font-size: 1.2rem;
-				border: none;
-				cursor: pointer;
-			}
+			.close { cursor: pointer; }
 		}
 	}
-	.opts {
-		padding: .3rem;
-		border: 1px solid #ccc;
-		background-color: #666;
-		ul { 
-			overflow-y: auto;
-			max-height: var(--option-height, 300px);
-			width: 100%;
-			margin: .3rem 0;
-			padding: 0;
-			list-style: none;
-			li {
-				padding: 0.3em 0.5em;
-				cursor: pointer;
-				user-select: none;
-				&:hover {
-					background: #eee;
-				}
+	.options {
+		display: flex;
+		flex-direction: column;
+		:not(:first-child) {
+			border-top: 1px solid #fff;
+		}
+		.option {
+			display: flex;
+			align-items: center;
+			height: 2.5rem;
+			user-select: none;
+			cursor: pointer;
+			&:hover {
+				color: #fff;
+				background: #eee;
 			}
 		}
 	}

@@ -29,6 +29,7 @@ jQC.define('j-dialog', {
 	x: 'left', y: 'bottom',
 	width: 0, minWidth: 0, maxWidth: 0,
 	height: 0, minHeight: 0, maxHeight: 0,
+	fit: false,
 	full: false,
 	btn: { close: true },
 },
@@ -42,9 +43,11 @@ const x = xMap[p.x]
 el.style.setProperty('--area', `${p.y} ${x}`)
 this.$this = $this
 this.card = $this.find('.card').el(0)
+if (this.p.fit) $this.css('width', 'anchor-size(width)')
   },
   methods: {
 open(anchor) {
+	if (anchor && !(anchor instanceof HTMLElement)) anchor = anchor.el(0)
 	const $this = this.$this
 	const p = this.p
 	const el = $this.el(0)

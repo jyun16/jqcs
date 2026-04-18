@@ -1,66 +1,62 @@
 import jQC from '../../../src/jqc.js'
 const d = console.log
-await jQC.import('modal')
-let $modal = null
 jQC.define('j-rich-select', {
-  html: `<div class="tags" @click='toggleOpts()' '{{ !attrs }}'>
-	{% for k in vals %}
-		<div class="tag">
-			<div class="lbl">{{ opts[k] }}</div>
-			<div class="rm material-symbols-outlined" @click="rmVal('{{ k }}')">close</div>
+  html: `<div class="items" @click='open'>
+	{% for v in val %}
+		<div class="item">
+			<span>{{ opts[v] }}</span>
+			<span class="icon close" @click='rmItem(e)' value='{{ v }}'>close</span>
 		</div>
 	{% end %}
-	<modal>
-		<div class="opts">
-			<input type='text' @typed='filter(e)' @stop="@stop" value='{{ filter }}'></input>
-			<ul>
-				{% for k, v in opts %}
-					{% if (!vals.includes(k) && v.includes(filter)) %}
-						<li @click="select('{{ k }}')">{{ v }}</li>
-					{% end %}
-				{% end %}
-			</ul>
-		</div>
-	</modal>
-</div>`,
+</div>
+<j-dialog p-btn.close="false" p-fit="true" @typed='search'>
+	<j-search></j-search>
+	<div class="options" @click='select(e)'>
+		<p>{{ val }}</p>
+		{% for v, l in opts %}
+			<p>{{ v }}: {{ !val.includes(v) }}</p>
+			{% if !val.includes(v) %}
+				<div class="option" value='{{v}}'>{{l}}</div>
+			{% end %}
+		{% end %}
+	</div>
+</j-dialog>`,
   
-  css: "input {\n  width: 100%;\n  padding: 10px;\n  border: 2px solid #ddd;\n  border-radius: 5px;\n}\ninput:focus {\n  border-color: #0099ff;\n  outline: none;\n}\n\n.tags {\n  display: flex;\n  position: relative;\n  flex-wrap: wrap;\n  align-items: center;\n  gap: 0.5em;\n  width: 100%;\n  height: 2.6rem;\n  padding: 0 0.5rem;\n  background-color: white;\n  border: 2px solid #ddd;\n  border-radius: 5px;\n  cursor: pointer;\n  margin-bottom: 0.5rem;\n}\n.tags .tag {\n  display: flex;\n  align-items: center;\n  background: #666;\n  padding: 0 0.5rem;\n  border-radius: 4px;\n  user-select: none;\n  height: 2rem;\n  cursor: default;\n}\n.tags .tag .lbl {\n  transform: translateY(-1px);\n}\n.tags .tag .rm {\n  transform: translateX(4px);\n  font-size: 1.2rem;\n  border: none;\n  cursor: pointer;\n}\n\n.opts {\n  padding: 0.3rem;\n  border: 1px solid #ccc;\n  background-color: #666;\n}\n.opts ul {\n  overflow-y: auto;\n  max-height: var(--option-height, 300px);\n  width: 100%;\n  margin: 0.3rem 0;\n  padding: 0;\n  list-style: none;\n}\n.opts ul li {\n  padding: 0.3em 0.5em;\n  cursor: pointer;\n  user-select: none;\n}\n.opts ul li:hover {\n  background: #eee;\n}",
+  css: ".items {\n  display: flex;\n  align-items: center;\n  gap: 0.3rem;\n  height: 2.5rem;\n  padding: 0 0.5rem;\n  background: #fff;\n  border-radius: 5px;\n  user-select: none;\n}\n.items .item {\n  display: flex;\n  align-items: center;\n  height: 1.8rem;\n  padding: 0.1rem 0.3rem 0.2rem 0.4rem;\n  color: #fff;\n  background: #5e6264;\n  border-radius: 0.2rem;\n  cursor: default;\n}\n.items .item .close {\n  cursor: pointer;\n}\n\n.options {\n  display: flex;\n  flex-direction: column;\n}\n.options :not(:first-child) {\n  border-top: 1px solid #fff;\n}\n.options .option {\n  display: flex;\n  align-items: center;\n  height: 2.5rem;\n  user-select: none;\n  cursor: pointer;\n}\n.options .option:hover {\n  color: #fff;\n  background: #eee;\n}",
   globalCss: "",
   p: {
-	vals: [],
-	opts: {},
-	filter: '',
-	option_height: '',
+	name: '', val: [ 'hoge' ],
+	opts: {
+		hoge: 'HOGE',
+		fuga: 'FUGA',
+		foo: 'FOO',
+		bar: 'BAR',
+	},
 },
   init() {
 this.render()
-  },
-  postRender() {
-$modal = jQC.bind('modal')
+const $dia = jQC.bind('j-dialog', this)
+const $filter = jQC.bind('j-search', this)
+$filter.render()
+this.$dia = $dia
+this.$filter = $filter
+this.$dia.open(this)
   },
   methods: {
-toggleOpts() {
-	$modal.toggle()
+open() {
+	this.$dia.open(this)
 },
-filter(e) {
-	this.p.filter = e.target.value
-	this.render()
-	const el = this.find('input').el(0)
-	el.focus()
-	const val = el.value
-	el.setSelectionRange(val.length, val.length)
+rmItem(e) {
+	e.stopPropagation()
+	d('rm', e.target.getAttribute('value'))
 },
-select(k) {
-	if (!this.p.vals.includes(k)) {
-		this.p.vals.push(k)
-		this.p.filter = ''
-		this.render()
-	}
+search(e) {
+	d(this.$filter.p.val)
 },
-rmVal(k) {
-	this.p.vals = this.p.vals.filter(v => v !== k)
-	this.render()
-}
+select(e) {
+	d('sel', e.target.getAttribute('value'))
+	this.$dia.close()
+},
   }
 })
 
