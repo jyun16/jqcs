@@ -12,9 +12,7 @@ jQC.define('j-rich-select', {
 <j-dialog p-btn.close="false" p-fit="true" @typed='search'>
 	<j-search></j-search>
 	<div class="options" @click='select(e)'>
-		<p>{{ val }}</p>
 		{% for v, l in opts %}
-			<p>{{ v }}: {{ !val.includes(v) }}</p>
 			{% if !val.includes(v) %}
 				<div class="option" value='{{v}}'>{{l}}</div>
 			{% end %}
@@ -26,12 +24,7 @@ jQC.define('j-rich-select', {
   globalCss: "",
   p: {
 	name: '', val: [ 'hoge' ],
-	opts: {
-		hoge: 'HOGE',
-		fuga: 'FUGA',
-		foo: 'FOO',
-		bar: 'BAR',
-	},
+	opts: { hoge: 'HOGE', fuga: 'FUGA', rselect1: 'R-SELECT 1', rselect2: 'R-SELECT 2' },
 },
   init() {
 this.render()

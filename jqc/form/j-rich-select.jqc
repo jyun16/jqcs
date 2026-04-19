@@ -8,9 +8,7 @@ pug
 	j-dialog(p-btn.close=false p-fit=true @typed='search')
 		j-search
 		.options(@click='select(e)')
-			p {{ val }}
 			{% for v, l in opts %}
-				p {{ v }}: {{ !val.includes(v) }}
 				{% if !val.includes(v) %}
 					.option(value='{{v}}') {{l}}
 				{% end %}
@@ -18,12 +16,7 @@ pug
 p
 	{
 		name: '', val: [ 'hoge' ],
-		opts: {
-			hoge: 'HOGE',
-			fuga: 'FUGA',
-			foo: 'FOO',
-			bar: 'BAR',
-		},
+		opts: { hoge: 'HOGE', fuga: 'FUGA', rselect1: 'R-SELECT 1', rselect2: 'R-SELECT 2' },
 	}
 head
 	const d = console.log

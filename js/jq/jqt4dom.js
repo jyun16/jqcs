@@ -368,7 +368,7 @@ class Builder {
 			}
 			else if (tok.t === 'expr') {
 				this.next()
-				if (tok.v.startsWith('!')) tok.v = tok.v.slice(1).trim() + ' | raw'
+				if (tok.v.startsWith('=')) tok.v = tok.v.slice(1).trim() + ' | raw'
 				if (tok.v.startsWith('ro:')) tok.v = tok.v.replace(/^ro:/, '')
 				this._dep(tok.v, cur)
 				ret.push({ t: 'expr', v: tok.v })
@@ -398,7 +398,7 @@ class Builder {
 			const { n, nd } = tok.v
 			const attr = n ? { n, nd } : { nd }
 			nd.forEach((x, i) => {
-				if (x.t === 'expr' && x.v.startsWith('!')) {
+				if (x.t === 'expr' && x.v.startsWith('=')) {
 					x.v = x.v.slice(1).trim() + ' | raw'
 				}
 				if (x.t === 'ctrl' && x.v.startsWith('if ')) {
@@ -477,7 +477,8 @@ class Builder {
 		if (v) {
 			ret.k = k
 			ret.lv = v
-		} else {
+		}
+		else {
 			ret.lv = k
 		}
 		if (b.length) ret.b = b
@@ -490,6 +491,7 @@ class Builder {
 	}
 
 	_dep(expr, path) {
+		expr = expr.replace(/^!+/, '').trim()
 		if (expr.startsWith('ro:')) return
 		let m = expr.match(/^([^=<>!]+)\s*==\s*(\w+)/)
 		if (m) {
