@@ -1,5 +1,5 @@
 pug
-	select(name!='{{ name }}' '{{ !attrs }}')
+	select(name!='{{ name }}' '{{ =attrs }}')
 		{% for v, l in opts %}
 			option(value!='{{ v }}' '{% if v == val %}selected{% end %}') {{ l }}
 		{% end %}

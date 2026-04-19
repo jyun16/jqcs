@@ -1,5 +1,5 @@
 pug
-	textarea(@typed='input(e)' '{{ !attrs }}') {{ val }}
+	textarea(@typed='input(e)' '{{ =attrs }}') {{ val }}
 p
 	{ name: '', val: '', max: 10 }
 methods

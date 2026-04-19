@@ -1,5 +1,5 @@
 pug
-	input(type='text' name!='{{ name }}' value!='{{ val }}' @typed='input(e)' '{{ !attrs }}')
+	input(type='text' name!='{{ name }}' value!='{{ val }}' @typed='input(e)' '{{ =attrs }}')
 	button(type='button' @click='search()')
 p
 	{ name: '', val: '' }

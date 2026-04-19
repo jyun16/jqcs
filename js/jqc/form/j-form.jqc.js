@@ -7,23 +7,23 @@ jQC.define('j-form', {
 			<div class="label">{{ v.label }}</div>
 			<div class="input">
 				{% if v.type == 'input' %}
-					<j-input name='{{ k }}' p-val='{{ v.val }}' '{{ !v.attrs }}'></j-input>
+					<j-input name='{{ k }}' p-val='{{ v.val }}' '{{ =v.attrs }}'></j-input>
 				{% else if v.type == 'password' %}
-					<j-password name='{{ k }}' p-val='{{ v.val }}' '{{ !v.attrs }}'></j-password>
+					<j-password name='{{ k }}' p-val='{{ v.val }}' '{{ =v.attrs }}'></j-password>
 				{% else if v.type == 'search' %}
-					<j-search name='{{ k }}' p-val='{{ v.val }}' '{{ !v.attrs }}'></j-search>
+					<j-search name='{{ k }}' p-val='{{ v.val }}' '{{ =v.attrs }}'></j-search>
 				{% else if v.type == 'textarea' %}
-					<j-textarea name='{{ k }}' p-val='{{ v.val }}' '{{ !v.attrs }}'></j-textarea>
+					<j-textarea name='{{ k }}' p-val='{{ v.val }}' '{{ =v.attrs }}'></j-textarea>
 				{% else if v.type == 'checkbox' %}
-					<j-checkbox name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ !v.attrs }}'></j-checkbox>
+					<j-checkbox name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ =v.attrs }}'></j-checkbox>
 				{% else if v.type == 'radio' %}
-					<j-radio name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ !v.attrs }}'></j-radio>
+					<j-radio name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ =v.attrs }}'></j-radio>
 				{% else if v.type == 'select' %}
-					<j-select name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ !v.attrs }}'></j-select>
+					<j-select name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ =v.attrs }}'></j-select>
 				{% else if v.type == 'mselect' %}
-					<j-mselect name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ !v.attrs }}'></j-mselect>
+					<j-mselect name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ =v.attrs }}'></j-mselect>
 				{% else if v.type == 'rich-select' %}
-					<j-rich-select name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ !v.attrs }}'></j-rich-select>
+					<j-rich-select name='{{ k }}' p-val='{{ v.val }}' p-opts='{{ v.opts }}' '{{ =v.attrs }}'></j-rich-select>
 				{% end %}
 			</div>
 		</div>

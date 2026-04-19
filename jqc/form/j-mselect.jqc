@@ -1,5 +1,5 @@
 pug
-	select(name!='{{ name }}' '{{ !attrs }}' multiple)
+	select(name!='{{ name }}' '{{ =attrs }}' multiple)
 		{% for v, l in opts %}
 			option(value!='{{ v }}' '{% if val.includes(v) %}selected{% end %}') {{ l }}
 		{% end %}

@@ -1,7 +1,7 @@
 import jQC from '../../../src/jqc.js'
 
 jQC.define('j-select', {
-  html: `<select name='{{ name }}' '{{ !attrs }}'>
+  html: `<select name='{{ name }}' '{{ =attrs }}'>
 	{% for v, l in opts %}
 		<option value='{{ v }}' '{% if v == val %}selected{% end %}'>{{ l }}</option>
 	{% end %}
