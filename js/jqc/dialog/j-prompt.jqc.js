@@ -3,7 +3,7 @@ const d = console.log
 jQC.define('j-prompt', {
   html: `<j-dialog p-full="true" p-btn.close="false" p-height='{{ height }}' p-min-height='{{ minHeight }}' @cb-close='closeCb'>
 	<div slot='header'>{{ title }}</div>
-	<j-input name='return' p-val='{{ val }}' @typed='input(e)' @keydown='send(e)' autofocus="autofocus"></j-input>
+	<j-input name='return' p-val='{{ val }}' @keydown='send(e)' autofocus="autofocus"></j-input>
 	<div slot='footer'>
 		<button class="secondary" @click='cancel'>{{ label.cancel }}</button>
 		<button class="primary" @click='ok'>{{ label.ok }}</button>
@@ -13,7 +13,7 @@ jQC.define('j-prompt', {
   css: "",
   globalCss: "",
   p: {
-	title: '', val: '',
+	title: '', val: 'xx',
 	label: { cancel: 'キャンセル', ok: '決定' },
 	width: 0, minWidth: 0, maxWidth: 0,
 	height: 0, minHeight: 0, maxHeight: 0,
@@ -29,6 +29,7 @@ this.$inp = $inp
   methods: {
 async open(title='') {
 	if (title) this.p.title = title
+	this.$inp.find('input').el(0).value = ''
 	this.render()
 	this.$dia.open()
 	const { promise, resolve } = Promise.withResolvers()
@@ -36,7 +37,10 @@ async open(title='') {
 	return promise
 },
 send(e) {
-	if (e.key == 'Enter') this.ok()
+	if (e.key == 'Enter') {
+		e.preventDefault()
+		this.ok()
+	}
 },
 resolve(v) {
 	if (this._resolve) this._resolve(v)

@@ -8,7 +8,7 @@ pug
 	j-dialog(p-btn.close=false p-fit=true @typed='search')
 		j-search
 		.options(@click='select(e)')
-			{% for v, l in opts %}
+			{% for v, l in viewOpts %}
 				{% if !val.includes(v) %}
 					.option(value='{{v}}') {{l}}
 				{% end %}
@@ -21,6 +21,7 @@ p
 head
 	const d = console.log
 init
+	this.p.viewOpts = this.p.opts
 	this.render()
 	const $dia = jQC.bind('j-dialog', this)
 	const $filter = jQC.bind('j-search', this)

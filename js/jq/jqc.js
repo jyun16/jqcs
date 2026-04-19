@@ -336,12 +336,20 @@ const jQC = (function() {
 					const method = m ? m[1] : attrVal
 					const argsStr = m ? m[2] : ''
 					if (event == 'typed') {
+						let ms = parseInt(event.split('.')[1])
+						if (isNaN(ms)) ms = 300
 						let timer = null
 						node.addEventListener('input', e => {
 							clearTimeout(timer)
 							timer = setTimeout(() => {
 								callMethod($el, method, argsStr, e)
-							}, 50)
+							}, ms)
+						})
+						node.addEventListener('keydown', e => {
+							if (e.key === 'Enter' && !e.isComposing && node.tagName !== 'TEXTAREA') {
+								clearTimeout(timer)
+								callMethod($el, method, argsStr, e)
+							}
 						})
 						continue
 					}
