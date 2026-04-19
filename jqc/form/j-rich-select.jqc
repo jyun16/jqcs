@@ -34,13 +34,16 @@ methods
 	},
 	rmItem(e) {
 		e.stopPropagation()
-		d('rm', e.target.getAttribute('value'))
+		const v = e.target.getAttribute('value')
+		this.p.val = this.p.val.filter(x => x != v)
+		this.render()
 	},
 	search(e) {
 		d(this.$filter.p.val)
 	},
 	select(e) {
-		d('sel', e.target.getAttribute('value'))
+		this.p.val.push(e.target.getAttribute('value'))
+		this.render()
 		this.$dia.close()
 	},
 scss

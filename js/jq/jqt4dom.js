@@ -34,7 +34,7 @@ const jQT4DOM = (function() {
 		let [exp, ...pipe] = expr.split('|').map(s => s.trim())
 		let val = evalExpr(exp, data)
 		if (val != null && val != undefined && !pipe.length && typeof val === 'object') {
-			val =  JSON.stringify(val)
+			val =	JSON.stringify(val)
 		}
 		for (let p of pipe) {
 			if (p === 'raw' || p === 'json') continue
@@ -438,23 +438,23 @@ class Builder {
 	}
 
 	_if(cond, path) {
-    this._dep(cond, path)
-    const ret = { t: 'if', v: cond, b: this._nodes(path, t => t.t === 'ctrl' && (t.v.startsWith('else') || t.v === 'end')) }
-    let ptr = ret
-    while (this.peek() && this.peek().t === 'ctrl' && this.peek().v.startsWith('else if ')) {
-      const elif = this.next().v.slice(8).trim()
-      this._dep(elif, path.concat(['elif']))
-      const nextElif = { t: 'elif', v: elif, b: this._nodes(path.concat(['elif']), t => t.t === 'ctrl' && (t.v.startsWith('else') || t.v === 'end')) }
-      ptr.elif = nextElif
-      ptr = nextElif
-    }
-    if (this.peek() && this.peek().t === 'ctrl' && this.peek().v === 'else') {
-      this.next()
-      ret.el = { b: this._nodes(path.concat(['el']), t => t.t === 'ctrl' && t.v === 'end') }
-    }
-    if (this.peek() && this.peek().t === 'ctrl' && this.peek().v === 'end') this.next()
-    return ret
-  }
+		this._dep(cond, path)
+		const ret = { t: 'if', v: cond, b: this._nodes(path, t => t.t === 'ctrl' && (t.v.startsWith('else') || t.v === 'end')) }
+		let ptr = ret
+		while (this.peek() && this.peek().t === 'ctrl' && this.peek().v.startsWith('else if ')) {
+			const elif = this.next().v.slice(8).trim()
+			this._dep(elif, path.concat(['elif']))
+			const nextElif = { t: 'elif', v: elif, b: this._nodes(path.concat(['elif']), t => t.t === 'ctrl' && (t.v.startsWith('else') || t.v === 'end')) }
+			ptr.elif = nextElif
+			ptr = nextElif
+		}
+		if (this.peek() && this.peek().t === 'ctrl' && this.peek().v === 'else') {
+			this.next()
+			ret.el = { b: this._nodes(path.concat(['el']), t => t.t === 'ctrl' && t.v === 'end') }
+		}
+		if (this.peek() && this.peek().t === 'ctrl' && this.peek().v === 'end') this.next()
+		return ret
+	}
 
 	_for(line, path) {
 		const m = line.match(/^(\w+)(?:\s*,\s*(\w+))?\s+in\s+(.+)$/)
@@ -611,11 +611,11 @@ class TokStat {
 		return this.readUntilStr('>')
 	}
 	readTagValue() {
-		return this.readUntil(c => [ '<', '{' ].includes(c) && !this.isPrevEsc(), this.pm)
+		return this.readUntil(c => [ '<', '{' ].includes(c) && !this.isPrevEsc(), true)
 	}
 	readQStr(q) {
 		q ||= this.q
-		return this.readUntil(c => c == '{' || (c == q && !this.isPrevEsc()), (this.a && this.q == '') || this.pm)
+		return this.readUntil(c => c == '{' || (c == q && !this.isPrevEsc()), true)
 	}
 	readAttr() {
 		return this.readUntil(c => [ '<', '>', '{', '=' ].includes(c), (this.a && this.q == '') || this.pm)
@@ -653,7 +653,7 @@ class TokStat {
 		this.pm = false
 	}
 	nodeOrToken(t, v) {
-		this.a ? this.node(t, v) :  this.token(t, v)
+		this.a ? this.node(t, v) :	this.token(t, v)
 	}
 	node(t, v) {
 		const tok = { t, v }
@@ -680,6 +680,7 @@ function eraseQEscape(q, str) {
 function parse(s) {
 	while (!s.fin()) {
 		s.skipWS()
+		if (s.fin()) break
 		const c = s.read()
 		if (c == '<') { parseTag(s, c) }
 		else if (c == '{') {
@@ -779,7 +780,8 @@ function parseOther(s, c) {
 		}
 		else {
 			x = x.replace(/(\\{\\{|\\}\\}|\\{%|\\%})/g, m => m.replace(/\\/g, ''))
-			if (x != '') s.nodeOrToken('text', x)	
+			if (!s.a && !s.pm) x = x.replace(/^\s*[\r\n]\s*|\s*[\r\n]\s*$/g, '').replace(/\s*[\r\n]\s*/g, ' ')
+			if (x != '') s.nodeOrToken('text', x)
 		}
 	}
 }
