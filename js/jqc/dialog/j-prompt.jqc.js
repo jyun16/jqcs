@@ -13,7 +13,7 @@ jQC.define('j-prompt', {
   css: "",
   globalCss: "",
   p: {
-	title: '', val: 'xx',
+	title: '', val: 'XXX',
 	label: { cancel: 'キャンセル', ok: '決定' },
 	width: 0, minWidth: 0, maxWidth: 0,
 	height: 0, minHeight: 0, maxHeight: 0,
@@ -27,10 +27,18 @@ this.$dia = $dia
 this.$inp = $inp
   },
   methods: {
+renderAll() {
+	this.render()
+	this.$inp.render()
+},
+resolve(v) {
+	if (this._resolve) this._resolve(v)
+	this._resolve = null
+},
 async open(title='') {
 	if (title) this.p.title = title
-	this.$inp.find('input').el(0).value = ''
-	this.render()
+	this.$inp.p.val = ''
+	this.renderAll()
 	this.$dia.open()
 	const { promise, resolve } = Promise.withResolvers()
 	this._resolve = resolve
@@ -41,10 +49,6 @@ send(e) {
 		e.preventDefault()
 		this.ok()
 	}
-},
-resolve(v) {
-	if (this._resolve) this._resolve(v)
-	this._resolve = null
 },
 closeCb() {
 	this.resolve(null)

@@ -1,4 +1,4 @@
-const d = (...args) => console.dir( args.length === 1 ? args[0] : args, { depth: null })
+const d = console.log
 import $ from './jq.js'
 import {
 	deepClone, diffObj, evalExpr, filters, parseAttributes,
@@ -178,6 +178,16 @@ const jQT4DOM = (function() {
 		return val
 	}
 
+	function isInput(el) {
+		return el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.tagName === 'SELECT'
+	}
+
+	function setElValue(el, n, val) {
+		if (n === 'value' && isInput(el)) {
+			el.value = val
+		}
+	}
+
 	function rTag(n, path, data) {
 		const el = document.createElement(n.n)
 		n._dom = el
@@ -207,6 +217,7 @@ const jQT4DOM = (function() {
 						if (n.startsWith('@cb')) n = 'jqc-cb-' + n.slice(4)
 						else if (n.startsWith('@')) n = 'jqc-on-' + n.slice(1)
 					}
+					setElValue(el, n, val)
 					el.setAttribute(n, val)
 				}
 				else if (!a.n && (val || attrs)) {
@@ -267,6 +278,17 @@ const jQT4DOM = (function() {
 		const { ast, index, nodes, old } = parsed
 		if (!data || !old) return
 		const { created, changed, removed } = diffObj(Object.keys(index), data, old)
+		for (const key of Object.keys(index)) {
+			if (key in changed) continue
+			for (const path of index[key] || []) {
+				const node = getByPath(ast, path)
+				if (node && node._dom && isInput(node._dom)) {
+					if (node._attr === 'value' && node._dom.value !== String(data[key] || '')) {
+						changed[key] = data[key]
+					}
+				}
+			}
+		}
 		const allKeys = new Set([ ...Object.keys(created), ...Object.keys(changed), ...Object.keys(removed) ])
 		let orgParent = null
 		const patched = new Set()
@@ -279,6 +301,7 @@ const jQT4DOM = (function() {
 				if (node.t === 'expr') {
 					const { val, pipe } = renderExpr(node.v, data)
 					if (node._attr) {
+						setElValue(node._dom, node._attr, val)
 						node._dom.setAttribute(node._attr, val)
 					}
 					else if (pipe.includes('raw') && typeof val === 'object') {

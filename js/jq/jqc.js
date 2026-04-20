@@ -201,7 +201,6 @@ const jQC = (function() {
 			const parsed = def.ast ? def.ast : buildByHTML(def.html)
 			$el._caller = caller
 			$el._parsed = parsed
-			$el._index = parsed.nodes
 			$el.attrs = $el.attrs.trim()
 			$el._domMap = {}
 			$el.stash = {}
