@@ -345,8 +345,8 @@ const jQT4DOM = (function() {
 
 export default jQT4DOM
 
-export function buildByHTML(template) {
-	return build(tokenize(template))
+export function buildByHTML(html) {
+	return build(tokenize(html))
 }
 
 class Builder {
@@ -702,7 +702,9 @@ function eraseQEscape(q, str) {
 
 function parse(s) {
 	while (!s.fin()) {
+		const sp = s.p
 		s.skipWS()
+		const ws = s.c.slice(sp, s.p)
 		if (s.fin()) break
 		const c = s.read()
 		if (c == '<') { parseTag(s, c) }
@@ -714,7 +716,7 @@ function parse(s) {
 		}
 		else if (c == "'" || c == '"') { parseQStr(s, c) }
 		else if (c == '>') { s.outAttr() }
-		else { parseOther(s, c) }
+		else { parseOther(s, c, ws) }
 	}
 }
 
@@ -777,7 +779,7 @@ function parseQStr(s, c) {
 	}
 }
 
-function parseOther(s, c) {
+function parseOther(s, c, ws = '') {
 	if (s.q) {
 		const x = s.readQStr(s.q)
 		DEBUG.o && d(`O1: [${c}] >${x}< (${s.q})`)
@@ -803,7 +805,10 @@ function parseOther(s, c) {
 		}
 		else {
 			x = x.replace(/(\\{\\{|\\}\\}|\\{%|\\%})/g, m => m.replace(/\\/g, ''))
-			if (!s.a && !s.pm) x = x.replace(/^\s*[\r\n]\s*|\s*[\r\n]\s*$/g, '').replace(/\s*[\r\n]\s*/g, ' ')
+			if (!s.a && !s.pm) {
+				x = ws + x
+				x = x.replace(/[\r\n\t]+/g, ' ')
+			}
 			if (x != '') s.nodeOrToken('text', x)
 		}
 	}

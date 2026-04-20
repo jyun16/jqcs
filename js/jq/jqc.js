@@ -283,11 +283,11 @@ const jQC = (function() {
 
 	function bindCB($el, el) {
 		const cb = {}
-		for (const attr of el.attributes) {
+		for (const attr of [...el.attributes]) {
 			const name = attr.name
 			if (name.startsWith('@cb-') || name.startsWith('jqc-cb-')) {
 				const key = name.replace(/(@cb-|jqc-cb-)/, '')
-				cb[key] = attr.value
+				cb[toCamel(key)] = attr.value
 				el.removeAttribute(attr.name)
 			}
 		}

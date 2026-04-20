@@ -1,5 +1,5 @@
 import jQC from '../../../src/jqc.js'
-
+const d = console.log
 jQC.define('j-search', {
   html: `<input type='text' name='{{ name }}' value='{{ val }}' @typed='input(e)' '{{ =attrs }}'></input>
 <button type='button' @click='search()'></button>`,

@@ -48,7 +48,7 @@ function renderAST(nodes, ret) {
 		const node = nodes[i]
 		const pad = '\t'.repeat(node.indent)
 		if (node.raw !== undefined) {
-			ret.push(`${pad}${node.raw}`)
+			ret.push(node.raw)
 			continue
 		}
 		const attr = node.attrs.length > 0 ? ' ' + node.attrs.join(' ') : ''

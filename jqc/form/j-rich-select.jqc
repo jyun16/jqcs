@@ -5,9 +5,9 @@ pug
 				span {{ opts[v] }}
 				span.icon.close(@click='rmItem(e)' value='{{ v }}') close
 		{% end %}
-	j-dialog(p-btn.close=false p-fit=true @typed='search')
-		j-search
-		.options(@click='select(e)')
+	j-dialog(p-btn.close=false p-fit=true)
+		j-input(p-icon='search' @cb-input='filter' @cb-icon-click='iconClick')
+		.options(@click='select')
 			{% for v, l in viewOpts %}
 				{% if !val.includes(v) %}
 					.option(value='{{v}}') {{l}}
@@ -24,7 +24,7 @@ init
 	this.p.viewOpts = this.p.opts
 	this.render()
 	const $dia = jQC.bind('j-dialog', this)
-	const $filter = jQC.bind('j-search', this)
+	const $filter = jQC.bind('j-input', this)
 	$filter.render()
 	this.$dia = $dia
 	this.$filter = $filter
@@ -33,19 +33,22 @@ methods
 	open() {
 		this.$dia.open(this)
 	},
+	filter() {
+		d(this.$filter.p.val)
+	},
+	iconClick() {
+		d('called')
+	},
+	select() {
+		this.p.val.push(e.target.getAttribute('value'))
+		this.render()
+		this.$dia.close()
+	},
 	rmItem(e) {
 		e.stopPropagation()
 		const v = e.target.getAttribute('value')
 		this.p.val = this.p.val.filter(x => x != v)
 		this.render()
-	},
-	search(e) {
-		d(this.$filter.p.val)
-	},
-	select(e) {
-		this.p.val.push(e.target.getAttribute('value'))
-		this.render()
-		this.$dia.close()
 	},
 scss
 	.items {

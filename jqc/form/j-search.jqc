@@ -3,6 +3,8 @@ pug
 	button(type='button' @click='search()')
 p
 	{ name: '', val: '' }
+head
+	const d = console.log
 methods
 	input(e) {
 		this.p.val = e.target.value

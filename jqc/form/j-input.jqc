@@ -1,12 +1,39 @@
 pug
 	input(type='text' name!='{{ name }}' value!='{{ val }}' @typed='input(e)' '{{ =attrs }}')
+	{% if icon %}
+		span.icon(@click='iconClick(e)') {{ icon }}
+	{% end %}
 p
-	{ name: '', val: '' }
+	{ name: '', val: '', icon: '' }
+head
+	const d = console.log
+postRender
+	if (this.p.icon) {
+		this.find('input').css('padding-right', '40px')
+	}
 methods
 	input(e) {
 		this.p.val = e.target.value
+		this.cb('input')
+		e.preventDefault()
+	},
+	iconClick(e) {
+		d('call cb')
+		this.cb('iconClick')	
 	}
 scss
-	input {
-		width: 100%;
+	this {
+		position: relative;
+		input {
+			width: 100%;
+		}
+		span.icon {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 10px;
+			margin: auto;
+			cursor: pointer;
+			user-select: none;
+		}
 	}

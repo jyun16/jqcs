@@ -2,21 +2,21 @@ import jQC from '../../../src/jqc.js'
 const d = console.log
 jQC.define('j-rich-select', {
   html: `<div class="items" @click='open'>
-	{% for v in val %}
+{% for v in val %}
 		<div class="item">
 			<span>{{ opts[v] }}</span>
 			<span class="icon close" @click='rmItem(e)' value='{{ v }}'>close</span>
 		</div>
-	{% end %}
+{% end %}
 </div>
-<j-dialog p-btn.close="false" p-fit="true" @typed='search'>
-	<j-search></j-search>
-	<div class="options" @click='select(e)'>
-		{% for v, l in viewOpts %}
-			{% if !val.includes(v) %}
+<j-dialog p-btn.close="false" p-fit="true">
+	<j-input p-icon='search' @cb-input='filter' @cb-icon-click='iconClick'></j-input>
+	<div class="options" @click='select'>
+{% for v, l in viewOpts %}
+{% if !val.includes(v) %}
 				<div class="option" value='{{v}}'>{{l}}</div>
-			{% end %}
-		{% end %}
+{% end %}
+{% end %}
 	</div>
 </j-dialog>`,
   
@@ -30,7 +30,7 @@ jQC.define('j-rich-select', {
 this.p.viewOpts = this.p.opts
 this.render()
 const $dia = jQC.bind('j-dialog', this)
-const $filter = jQC.bind('j-search', this)
+const $filter = jQC.bind('j-input', this)
 $filter.render()
 this.$dia = $dia
 this.$filter = $filter
@@ -40,19 +40,22 @@ this.$dia.open(this)
 open() {
 	this.$dia.open(this)
 },
+filter() {
+	d(this.$filter.p.val)
+},
+iconClick() {
+	d('called')
+},
+select() {
+	this.p.val.push(e.target.getAttribute('value'))
+	this.render()
+	this.$dia.close()
+},
 rmItem(e) {
 	e.stopPropagation()
 	const v = e.target.getAttribute('value')
 	this.p.val = this.p.val.filter(x => x != v)
 	this.render()
-},
-search(e) {
-	d(this.$filter.p.val)
-},
-select(e) {
-	this.p.val.push(e.target.getAttribute('value'))
-	this.render()
-	this.$dia.close()
 },
   }
 })

@@ -11,7 +11,7 @@ input, textarea {
 	border: 2px solid currentColor;
 	border-radius: 5px;
 	user-select: none;
-	& + button {
+	& + span {
 		color: red;
 		background: var(--bg-color);
 	}
